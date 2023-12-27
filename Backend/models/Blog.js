@@ -13,7 +13,7 @@ const BlogSchema = new mongoose.Schema({
         },
         image:{
             type:String,
-            required:flase,
+            required:false,
         },
         username:{
             type:String,

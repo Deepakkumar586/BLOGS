@@ -4,6 +4,9 @@ const jwt  = require('jsonwebtoken');
 const dotenv = require('dotenv');
 require("dotenv").config();
 
+
+
+// REGISTER USER
 exports.userRegister = async(req,res)=>{
     try{
             const {username,email,password} = req.body;
@@ -52,7 +55,7 @@ exports.userRegister = async(req,res)=>{
     }
 }
 
-// Login 
+// LOGIN USER
 exports.userLogin = async(req,res)=>{
     try
     {
@@ -109,4 +112,22 @@ exports.userLogin = async(req,res)=>{
 		});
 	}
 }
-    
+
+
+// LOGOUT USER
+exports.userLogout = async(req,res)=>{
+    try{
+            res.clearCookie("token",{sameSite:"none",secure:true}).status(200).json({
+                success:true,
+                message:"User Logged Out Successfully"
+            })
+    }
+    catch (error) {
+		console.error(error);
+		// Return 500 Internal Server Error status code with error message
+		return res.status(500).json({
+			success: false,
+			message: `Logout Failure Please Try Again`,
+		});
+	}
+}    
