@@ -19,11 +19,13 @@ database.connect();
 const authRoutes = require("./routes/auth");
 const userRoutes = require('./routes/users');
 const blogRoutes = require('./routes/blog');
+const commentRoutes = require('./routes/comment');
 
 // USE ROUTES
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/blogs", blogRoutes);
+app.use("/api/comment",commentRoutes);
 
 // default routes
 app.get("/", (req, res) => {
