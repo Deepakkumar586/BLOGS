@@ -1,11 +1,12 @@
 const express = require("express");
 const app = express();
-const router = express.Router();
+// const router = express.Router();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
 // enable cors ---connect Express Middleware
 app.use(cors());
+// app.use(cors({origin:"http://localhost:5173",credentials:true}))
 app.use(cookieParser());
 
 // Middleware-->request ki body se data ko fetch karne ke liye use karte hai
@@ -17,15 +18,15 @@ database.connect();
 
 // Routes
 const authRoutes = require("./routes/auth");
-const userRoutes = require('./routes/users');
-const blogRoutes = require('./routes/blog');
-const commentRoutes = require('./routes/comment');
+const userRoutes = require("./routes/users");
+const blogRoutes = require("./routes/blog");
+const commentRoutes = require("./routes/comment");
 
 // USE ROUTES
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/blogs", blogRoutes);
-app.use("/api/comment",commentRoutes);
+app.use("/api/comment", commentRoutes);
 
 // default routes
 app.get("/", (req, res) => {

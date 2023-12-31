@@ -8,13 +8,16 @@ const {
   getAllBlogs,
   getUserBlogs,
   getSingleBlog,
+  searchBlogs
 } = require("../controller/Blog");
+const verifyToken = require("../verifyToken");
 
-router.post("/create", createBlog);
-router.put("/:id", updateBlog);
-router.delete("/:id", deleteBlog);
+router.post("/create", verifyToken,createBlog);
+router.put("/:id",verifyToken, updateBlog);
+router.delete("/:id",verifyToken, deleteBlog);
 router.get("/", getAllBlogs);
 router.get("/:id", getSingleBlog);
 router.get("/user/:userid", getUserBlogs);
+// router.get("/search/:prompt", searchBlogs);
 
 module.exports = router;

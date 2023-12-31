@@ -74,8 +74,11 @@ exports.deleteBlog= async(req,res)=>{
 // GET All BLOG
 exports.getAllBlogs= async(req,res)=>{
     try{
-        
-        const findBlog = await Blog.find();
+        const query = req.query;
+        console.log("SEARCH QUERY...",query);
+
+        const searchBlogs = {title:{$regex:query.search,$options:'i'}}
+        const findBlog = await Blog.find(query.search?searchBlogs:null);
 
         if(!findBlog){
             res.status(401).json({
@@ -125,9 +128,6 @@ exports.getSingleBlog= async(req,res)=>{
     }
 }
 
-
-
-
 // GET PARTICULAR USER BLOG
 exports.getUserBlogs= async(req,res)=>{
     try{
@@ -155,3 +155,18 @@ exports.getUserBlogs= async(req,res)=>{
         })
     }
 }
+
+
+// // SEARCH BLOGS
+// exports.searchBlogs = async(req,res)=>{
+//     try{
+
+//     }
+//     catch(err){
+//         console.log("SEARCH BLOG FAILURE",err);
+//         res.status(500).json({
+//             success:false,
+//             messgae:"SEARCH BLOG ISSUE...."
+//         })
+//     }
+// }
