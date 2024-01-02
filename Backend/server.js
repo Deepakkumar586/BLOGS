@@ -5,7 +5,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
 // enable cors ---connect Express Middleware
-app.use(cors());
+app.use(cors({origin:"http://localhost:5173",credentials:true}))
 // app.use(cors({origin:"http://localhost:5173",credentials:true}))
 app.use(cookieParser());
 
