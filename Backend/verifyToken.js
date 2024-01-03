@@ -20,7 +20,7 @@ const verifyToken=(req,res,next)=>{
                 message:"Token Is Not Valid."
             })
         }
-        req.userId=data.id
+        req.userId=data._id
         // console.log("Passed");
         next();
     })
