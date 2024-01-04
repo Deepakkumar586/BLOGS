@@ -15,7 +15,7 @@ function HomePosts({post}) {
             <p>@{post.username}</p>
             <div className='flex space-x-2'>
               <p>{new Date(post.updatedAt).toString().slice(0,15)}</p>
-              <p>{new Date(post.updatedAt).toString().slice(16,24)}</p>
+              <p>{new Date(post.updatedAt).toString().slice(16,30)}</p>
             </div>
 
           </div>

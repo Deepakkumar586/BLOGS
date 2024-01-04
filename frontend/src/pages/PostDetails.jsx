@@ -1,58 +1,90 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { AiTwotoneEdit } from "react-icons/ai";
 import { TiDelete } from "react-icons/ti";
 import Comment from "../components/Comment";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import { UserContext } from "../context/userContext";
+import Loader from "../components/Loader";
 
 const PostDetails = () => {
+  const {user} = useContext(UserContext);
+  // console.log(user?._id);
+  
+  const [post,setPost] = useState({});
+  const postId = useParams();
+  // console.log(postId);
+
+  const [loader,setLoader] = useState(false);
+
+  // fetchPost Accrding to id
+  const fetchPost = async()=>{
+    setLoader(true);
+    try{
+      const res = await axios.get('http://localhost:8000/api/blogs/'+postId.id);
+      console.log("Id According Data",res.data);
+      setPost(res.data.findSingleBlog);
+      setLoader(false);
+    }
+    catch(err){
+      setLoader(true);
+      console.log("Id Fetch Error Blog",err);
+    }
+  }
+
+  useEffect(()=>{
+    fetchPost();
+  },[postId]);
   return (
     <div>
       <Navbar />
-      <div className="px-8 px-[200px] mt-8">
+      {loader ? <div className="h-[80vh] flex justify-center items-center"><Loader/></div> : <div className="px-8 px-[200px] mt-8">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold text-black md:text-3xl">
-            10 Uses of Artificial Intelligence in Day to Day Life
+            {post.title}
           </h1>
-          <div className="flex items-center justify-center space-x-2">
+          
+          {user?._id===post?.userId &&  <div className="flex items-center justify-center space-x-2">
             <p>
               <AiTwotoneEdit />
             </p>
             <p>
               <TiDelete />
             </p>
-          </div>
+          </div> }
+         
         </div>
 
         <div className="flex items-center justify-between mt-2 md:mt-4">
-          <p>@DeepakDev</p>
+          <p>@{post.username}</p>
           <div className="flex space-x-2">
-            <p>23/12/23</p>
-            <p>12:24</p>
+            <p>{new Date(post.updatedAt).toString().slice(0,15)}</p>
+            <p>{new Date(post.updatedAt).toString().slice(16,24)}</p>
           </div>
         </div>
 
         <img
-          src="https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+          src={post.image}
           className="w-full mx-auto mt-8"
           alt=""
         />
         <p className="mx-auto mt-8 ">
-          Try the AI text generator, a tool for content creation. It leverages a
-          transformer-based Large Language Model (LLM) to produce text that
-          follows the users instructions. As an AI generator, it offers a range
-          of functions, from text generation, to completing sentences, and
-          predicting contextually relevant content. It can serve as a sentence
-          generator, word generator, and message generator, transforming input
-          into coherent text.
+          {post.description}
         </p>
         {/* for category  part start*/}
         <div className="flex items-center mt-8 space-x-4 font-semibold">
           <p>categories:</p>
           {/* actual category */}
           <div className="flex justify-center items-center space-x-2">
-            <div className="bg-gray-300 rounded-lg px-3 py-1">Tech</div>
-            <div className="bg-gray-300 rounded-lg px-3 py-1">Ai</div>
+          {
+            post.categories?.map((cat,index)=>(
+              <div key={index} className="bg-gray-300 rounded-lg px-3 py-1">{cat}</div>
+            ))
+          }
+           
+           
           </div>
         </div>
         {/* for comment section */}
@@ -70,7 +102,7 @@ const PostDetails = () => {
             <input className="md:w-[90%] outline-none py-2 px-4 mt-4 md:mt-0" type="text" placeholder="Write a own words"/>
             <button className="bg-black text-white px-4 py-2 md:w-[20%] mt-4 md:mt-0">Add Comment</button>
         </div>
-      </div>
+      </div>}
       <Footer />
     </div>
   );

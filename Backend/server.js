@@ -4,8 +4,10 @@ const app = express();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
+const multer = require("multer");
+
 // enable cors ---connect Express Middleware
-app.use(cors({origin:"http://localhost:5173",credentials:true}))
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 // app.use(cors({origin:"http://localhost:5173",credentials:true}))
 app.use(cookieParser());
 
@@ -35,6 +37,29 @@ app.get("/", (req, res) => {
     message: "Your server is up and running......",
   });
 });
+
+// image upload
+const storage = multer.diskStorage({
+  destination:(req,file,fuun)=>{
+    fuun(null,"images");
+  },
+  filename:(req,file,fuun)=>{
+    fuun(null,req.body.img)
+    // fuun(null,"hd.jpg")
+  }
+});
+
+const upload = multer({storage:storage})
+app.post("/api/upload",upload.single("file",(req,res)=>{
+ 
+    res.status(200).json({
+      success:true,
+      message:"Image has been uploaded Successfully!"
+    })
+  
+ 
+}))
+
 
 // middlewares
 require("dotenv").config();

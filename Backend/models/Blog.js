@@ -8,8 +8,8 @@ const BlogSchema = new mongoose.Schema({
         },
         description:{
             type:String,
-            required:true,
-            unique:true
+            // required:true,
+            // unique:true
         },
         image:{
             type:String,

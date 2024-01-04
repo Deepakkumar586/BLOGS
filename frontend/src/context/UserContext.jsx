@@ -8,7 +8,7 @@ export function UserContextProvider({ children }) {
   const getUser = async()=>{
     try{
       const res = await axios.get('http://localhost:8000/api/auth/refresh',{withCredentials:true})
-      // console.log(res.data);
+      console.log("User COntext",res.data);
       setUser(res.data);
     }
     catch(err){
