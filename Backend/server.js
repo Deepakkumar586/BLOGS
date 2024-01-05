@@ -3,6 +3,7 @@ const app = express();
 // const router = express.Router();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const path = require("path");
 
 const multer = require("multer");
 
@@ -13,6 +14,9 @@ app.use(cookieParser());
 
 // Middleware-->request ki body se data ko fetch karne ke liye use karte hai
 app.use(express.json());
+
+
+app.use("/images",express.static(path.join(__dirname,"/images")))
 
 // Database Connect
 const database = require("./DB/database");

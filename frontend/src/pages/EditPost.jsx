@@ -1,14 +1,46 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { RxCross2 } from "react-icons/rx";
+import { useNavigate, useParams } from 'react-router-dom';
+import axios  from 'axios';
+import { UserContext } from '../context/userContext';
 
 const EditPost = () => {
+    const {user} = useContext(UserContext)
+    const navigate  =  useNavigate(); 
+    const postId = useParams().id;
+    const  [title,setTitle] = useState("");
+    const  [description,setDescription] = useState("");
+    const  [file,setFile] = useState(null);
+
      // single category
      const [cat,setCat] = useState("");
      // array category
      const [cats,setCats] = useState([]);
- 
+
+    // UPDATE POST
+    const fetchPost = async()=>{
+      try{
+            const res = await axios.get("http://localhost:8000/api/blogs/"+postId)
+            console.log("Edit Post UI DATA",res.data);
+            setTitle(res.data.findSingleBlog.title)
+            setDescription(res.data.findSingleBlog.description)
+            setFile(res.data.findSingleBlog.image);
+            setCats(res.data.findSingleBlog.categories
+              )
+      }
+      catch(err){
+        console.log("Update Error",err);
+      }
+    }
+
+
+    useEffect(()=>{
+      fetchPost();
+    },[postId])
+
+     
  
      const addCategory = ()=>{
          let updatedCats=[...cats]
@@ -21,6 +53,48 @@ const EditPost = () => {
          let updatedCats=[...cats];
          updatedCats.splice(i);
          setCats(updatedCats);
+     } 
+
+     const handleUpdate = async(e)=>{
+      e.preventDefault();
+      const post = {
+        title,
+        description,
+        file,
+        username:user.username,
+        userId:user._id,
+        categories:cats
+      }
+      if(file){
+        const data = new FormData();
+        const filename = Date.now()+file.name
+        data.append("img",filename);
+        data.append("file",file);
+        post.image=filename
+
+        // img upload
+        try{
+          const imgUpload = await axios.post("http://localhost:8000/api/upload",data,{withCredentials:true});
+          console.log(imgUpload.data)
+        }
+        catch(err){
+          console.log("UI Image Upload  Problem",err);
+        }
+      }
+
+      // Blog Create
+      try{
+        const res = await axios.post("http://localhost:8000/api/blogs/"+postId,post,{withCredentials:true})
+        navigate("/posts/"+res.data.saveBlog._id
+        )
+        console.log("Update Data",res.data);
+
+
+
+      }
+      catch(err){
+        console.log("Blogs Update Problem",err);
+      }
      }
   return (
     <div>
@@ -30,16 +104,21 @@ const EditPost = () => {
             <h1 className='font-bold md:text-2xl text-xl '>Update a Post</h1>
             <form className='w-full flex flex-col space-y-4 md:space-y-8 mt-4'>
             <input
+                
                 className='px-4 py-2 outline-none'
                 type='text'
-                name='posttitle'
+                // name='posttitle'
                 placeholder='Enter post title'
+                onChange={(e)=>setTitle(e.target.value)}
+                value={title}
             />
             <input
                 className='px-4'
                 type='file'
-                name='posttitle'
-                placeholder='Enter post title'
+                // name='posttitle'
+                // value={file}
+                onChange={(e)=>setFile(e.target.files[0])}
+                
             />
             <div className='flex flex-col'>
                 <div className='flex items-center space-x-4 md:space-x-8'>
@@ -65,8 +144,9 @@ const EditPost = () => {
               
               </div>
             </div>
-            <textarea rows={15} cols={30} className='px-4 py-2 outline-none ' placeholder='Write post Description....'/>
-            <button className='bg-black w-full md:w-[20%] mx-auto text-white font-semibold px-4 py-2 md:text-xl text-lg '>Update Blog</button>
+            <textarea value={description}
+                onChange={(e)=>setDescription(e.target.value)} rows={15} cols={30} className='px-4 py-2 outline-none ' placeholder='Write post Description....'/>
+            <button onClick={handleUpdate} className='bg-black w-full md:w-[20%] mx-auto text-white font-semibold px-4 py-2 md:text-xl text-lg '>Update Blog</button>
             
 
             </form>

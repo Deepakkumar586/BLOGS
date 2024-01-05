@@ -4,20 +4,21 @@ import Footer from "../components/Footer";
 import { AiTwotoneEdit } from "react-icons/ai";
 import { TiDelete } from "react-icons/ti";
 import Comment from "../components/Comment";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../context/userContext";
 import Loader from "../components/Loader";
-
+import {IF,URL} from "../url"
 const PostDetails = () => {
   const {user} = useContext(UserContext);
   // console.log(user?._id);
   
   const [post,setPost] = useState({});
   const postId = useParams();
-  // console.log(postId);
+  console.log("URL POST ID",postId);
 
   const [loader,setLoader] = useState(false);
+  const navigate = useNavigate();
 
   // fetchPost Accrding to id
   const fetchPost = async()=>{
@@ -34,9 +35,29 @@ const PostDetails = () => {
     }
   }
 
+
+        // Delete Post
+       const handleDeletePost = async()=>{
+          try{
+             const res =  await axios.delete("http://localhost:8000/api/blogs/"+postId.id,{withCredentials:true})
+             console.log("DELETE POST",res.data)
+              navigate("/")
+          }
+          catch(err){
+            console.log("UI DELETE PROBLEM",err);
+          }
+        }
+
+
+
+        
   useEffect(()=>{
     fetchPost();
   },[postId]);
+
+
+
+  
   return (
     <div>
       <Navbar />
@@ -47,10 +68,10 @@ const PostDetails = () => {
           </h1>
           
           {user?._id===post?.userId &&  <div className="flex items-center justify-center space-x-2">
-            <p>
+            <p className="cursor-pointer" onClick={()=>navigate("/edit/"+postId.id)}>
               <AiTwotoneEdit />
             </p>
-            <p>
+            <p className="cursor-pointer" onClick={handleDeletePost}>
               <TiDelete />
             </p>
           </div> }
@@ -66,7 +87,7 @@ const PostDetails = () => {
         </div>
 
         <img
-          src={post.image}
+          src={IF+post.image}
           className="w-full mx-auto mt-8"
           alt=""
         />

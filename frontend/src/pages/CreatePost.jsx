@@ -4,6 +4,8 @@ import Footer from '../components/Footer'
 import { RxCross2 } from "react-icons/rx";
 import { UserContext } from '../context/userContext';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 
 
 const CreatePost = () => {
@@ -16,6 +18,9 @@ const CreatePost = () => {
     const [cat,setCat] = useState("");
     // array category
     const [cats,setCats] = useState([]);
+
+    const navigate = useNavigate();
+    console.log("file here",file)
 
 
     const addCategory = ()=>{
@@ -45,7 +50,7 @@ const CreatePost = () => {
       }
       if(file){
         const data = new FormData();
-        const filename = Date.now()+file.img
+        const filename = Date.now()+file.name
         data.append("img",filename);
         data.append("file",file);
         post.image=filename
@@ -63,7 +68,9 @@ const CreatePost = () => {
       // Blog Create
       try{
         const res = await axios.post("http://localhost:8000/api/blogs/create",post,{withCredentials:true})
-        console.log(res.data);
+        navigate("/posts/"+res.data.saveBlog._id
+        )
+        console.log("Create Data",res.data);
 
 
 
