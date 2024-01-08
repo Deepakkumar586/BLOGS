@@ -74,7 +74,7 @@ const EditPost = () => {
 
         // img upload
         try{
-          const imgUpload = await axios.post("http://localhost:8000/api/upload",data,{withCredentials:true});
+          const imgUpload = await axios.post("http://localhost:8000/api/upload",data);
           console.log(imgUpload.data)
         }
         catch(err){
@@ -84,9 +84,8 @@ const EditPost = () => {
 
       // Blog Create
       try{
-        const res = await axios.post("http://localhost:8000/api/blogs/"+postId,post,{withCredentials:true})
-        navigate("/posts/"+res.data.saveBlog._id
-        )
+        const res = await axios.put("http://localhost:8000/api/blogs/"+postId,post,{withCredentials:true})
+        navigate("/posts/"+res.data.updatedBlog._id)
         console.log("Update Data",res.data);
 
 

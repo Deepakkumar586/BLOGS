@@ -129,16 +129,12 @@ exports.userLogout = async (req, res) => {
 };
 
 // If User refresh Web
-exports.refreshWeb = async (req, res) => {
-  const token = req.cookies.token;
-  jwt.verify(token, process.env.SECRET, {}, async (err, data) => {
-    if (err) {
-      console.log("refresh user", err);
-      return res.status(404).json({
-        success: false,
-        message: "refersh Error",
-      });
-    }
-    res.status(200).json(data);
-  });
+exports.refreshWeb = (req, res) => {
+  const token=req.cookies.token
+   jwt.verify(token,process.env.SECRET,{},async (err,data)=>{
+      if(err){
+          return res.status(404).json(err)
+      }
+      res.status(200).json(data)
+  })
 };

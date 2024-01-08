@@ -9,7 +9,7 @@ router.get("/logout",userLogout);
 
 
 // Refresh user
-router.get("/refresh",refreshWeb)
+router.get("/refetch",refreshWeb)
 
 
 

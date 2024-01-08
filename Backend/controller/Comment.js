@@ -7,9 +7,10 @@ const Comment = require('../models/Comment');
 // CREATE COMMENT
 exports.createComment= async(req,res)=>{
         try{
-            const newComment = new Comment(req.body);
-            const saveComment  = await newComment.save();
-
+            const {comment,author,postId,userId} = req.body;
+            const saveComment = await Comment.create({
+                comment,author,postId,userId
+            })
             console.log("NEW COMMENT CREATED",saveComment);
 
             res.status(200).json({
