@@ -81,8 +81,8 @@ const PostDetails = () => {
         },
         { withCredentials: true }
       );
-      fetchCommentPost();
-      setComment1(" ");
+      // fetchCommentPost();
+      // setComment1(" ");
       window.location.reload(true);
       console.log("Comment Post Successfully", res.data);
     } catch (err) {

@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 import axios from "axios";
 import { Link, useLocation } from "react-router-dom";
 import Loader from "../components/Loader";
-import { UserContext } from "../context/userContext";
+import { UserContext } from "../context/UserContext";
 
 const Home = () => {
   const {search}= useLocation();

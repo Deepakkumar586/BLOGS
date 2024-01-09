@@ -4,7 +4,7 @@ import Footer from '../components/Footer';
 import { RxCross2 } from "react-icons/rx";
 import { useNavigate, useParams } from 'react-router-dom';
 import axios  from 'axios';
-import { UserContext } from '../context/userContext';
+import { UserContext } from '../context/UserContext';
 
 const EditPost = () => {
     const {user} = useContext(UserContext)

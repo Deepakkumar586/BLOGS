@@ -124,7 +124,9 @@ exports.getSingleBlog = async (req, res) => {
 // GET PARTICULAR USER BLOG
 exports.getUserBlogs = async (req, res) => {
   try {
-    const findBlogUser = await Blog.find({ userId: req.params.userid });
+    const findBlogUser = await Blog.find({ userId: req.params.id });
+    console.log(req.params.id);
+    console.log(findBlogUser[0]?.title);
 
     if (!findBlogUser) {
       res.status(401).json({

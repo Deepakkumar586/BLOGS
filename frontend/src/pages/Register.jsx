@@ -4,6 +4,7 @@ import Footer from '../components/Footer'
 import axios from 'axios';
 import { URL } from '../url';
 
+
 const Register = () => {
   const [registerData,setRegisterData] = useState({
     username:'',
@@ -44,6 +45,7 @@ const Register = () => {
 
   return (
    <>
+   
     <div className='flex items-center justify-between px-6 md:px-[200px] py-4'>
     <h1 className='text-lg md:text-xl font-extrabold'><Link to="/">Blogs</Link></h1>
     <h3><Link to="/login">Login</Link></h3>

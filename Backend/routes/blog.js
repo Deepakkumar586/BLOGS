@@ -17,7 +17,7 @@ router.put("/:id",verifyToken, updateBlog);
 router.delete("/:id",verifyToken, deleteBlog);
 router.get("/", getAllBlogs);
 router.get("/:id", getSingleBlog);
-router.get("/user/:userid", getUserBlogs);
+router.get("/user/:id", getUserBlogs);
 // router.get("/search/:prompt", searchBlogs);
 
 module.exports = router;

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { AiTwotoneEdit } from 'react-icons/ai'
 import { TiDelete } from 'react-icons/ti'
-import { UserContext } from '../context/userContext'
+import { UserContext } from '../context/UserContext'
 import axios from 'axios'
 
 const Comment = ({c}) => {
@@ -10,6 +10,7 @@ const Comment = ({c}) => {
   const deleteComment = async(id)=>{
     try{
       const res = await  axios.delete("http://localhost:8000/api/comment/"+id,{withCredentials:true})
+      window.location.reload(true);
     }
     catch(err){
       console.log("Delete Comment Problem On UI",err);
@@ -25,7 +26,7 @@ const Comment = ({c}) => {
             <p>{new Date(c.updatedAt).toString().slice(16,24)}</p>
 
         {/* for comment Edit and Delete */}
-        {user?._id===c?.userId ?
+        {user?._id===c?.userId?
               <div className="flex items-center justify-center space-x-2">
                     <p className="cursor-pointer" onClick={()=>deleteComment(c._id)}><TiDelete/></p>
                 </div>:""}

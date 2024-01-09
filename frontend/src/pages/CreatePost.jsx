@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { RxCross2 } from "react-icons/rx";
-import { UserContext } from '../context/userContext';
+import { UserContext } from '../context/UserContext';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -118,10 +118,10 @@ const CreatePost = () => {
               <div className='flex mx-4 mt-3'>
               {cats?.map((c,i)=>(
                 <div key={i} className='flex justify-center items-center space-x-2 mr-4 bg-gray-200 px-2 py-1 rounded-md'>
-                    <p>{c}</p>
-                    <p onClick={()=>deleteCategory(i)} className='text-white bg-black rounded-full cursor-pointer p-1 text-sm'><RxCross2 /></p>
-                </div>
-              ))}
+                <p>{c}</p>
+                <p onClick={()=>deleteCategory(i)} className='text-white bg-black rounded-full cursor-pointer p-1 text-sm'><RxCross2/></p>
+            </div>
+            ))}
               
               </div>
             </div>
