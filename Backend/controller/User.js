@@ -61,18 +61,20 @@ exports.deleteUser = async (req, res) => {
 
 // GET USERS
 // Example of a function that might cause the error
-exports.fetchUser = async (userId) => {
+exports.fetchUser = async (req,res) => {
   // Check if userId is defined before querying the database
-  if (!userId) {
-    // Handle the case where userId is undefined (e.g., return an error)
-    return { error: "User ID is undefined" };
-  }
 
   try {
+    const userId = req.params.id
     // Use Mongoose to query the database
-    const user = await User.findById(userId);
-    return user;
-  } catch (error) {
+    const findUser = await User.findById(userId);
+    res.status(200).json({
+      success:true,
+      findUser,
+      message:"Get Successfully User"
+    })
+  } 
+  catch (error) {
     // Handle any other errors that might occur during the query
     return { error: "Error fetching user" };
   }

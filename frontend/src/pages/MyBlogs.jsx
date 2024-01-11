@@ -8,19 +8,19 @@ import HomePosts from '../components/HomePosts';
 import Loader from "../components/Loader";
 
 const MyBlogs = () => {
-  const {search}= useLocation();
+  const { search } = useLocation();
   console.log(search);
-  const [posts,setPosts] = useState([]);
-  const [searchNoResult,setSearchNoresult] = useState(false);
-  const [loader,setLoader] = useState(false);
-  const {user} = useContext(UserContext);
+  const [posts, setPosts] = useState([]);
+  const [searchNoResult, setSearchNoresult] = useState(false);
+  const [loader, setLoader] = useState(false);
+  const { user } = useContext(UserContext);
   console.log(user);
 
   const fetchPost = async () => {
     setLoader(true);
     try {
-      const res = await axios.get("http://localhost:8000/api/blogs/user/"+user?._id);
-      console.log("My BLOGS",res.data.findBlogUser);
+      const res = await axios.get("http://localhost:8000/api/blogs/user/" + user?._id);
+      console.log("My BLOGS", res.data.findBlogUser);
       setPosts(res.data.findBlogUser);
       // if(res.data.findBlog.length==0){
       //   setSearchNoresult(true);
@@ -37,24 +37,22 @@ const MyBlogs = () => {
 
   useEffect(() => {
     fetchPost();
-  }, [search]);
+  }, [user?._id]);
   return (
     <div>
-        <Navbar/>
-        <div className="px-8 md:px-[200px] min-h-[80vh]">
-        {
-         loader?<div className="h-[40vh] flex justify-center items-center"><Loader/></div>:searchNoResult ? posts.map((post,i)=>{
-            return (
-              <>
-                <Link to={user?`/posts/${post._id}`:"/login"}>
-                <HomePosts key={i} post={post}/>
-                </Link>
-              </>
-            )
-          }):<h3 className="text-center font-bold mt-16">No Posts Available  </h3>
-        }
-        </div>
-        <Footer/>
+      <Navbar />
+      <div className="px-8 md:px-[200px] min-h-[80vh]">
+        {loader ? <div className="h-[40vh] flex justify-center items-center"><Loader /></div> : !searchNoResult ?
+          posts.map((post) => (
+            <>
+              <Link to={user ? `/posts/${post?._id}` : "/login"}>
+                <HomePosts key={post._id} post={post} />
+              </Link>
+            </>
+
+          )) : <h3 className="text-center font-bold mt-16">No posts available</h3>}
+      </div>
+      <Footer />
     </div>
   )
 }
