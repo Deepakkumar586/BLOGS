@@ -15,8 +15,7 @@ app.use(cookieParser());
 // Middleware-->request ki body se data ko fetch karne ke liye use karte hai
 app.use(express.json());
 
-
-app.use("/images",express.static(path.join(__dirname,"/images")))
+app.use("/images", express.static(path.join(__dirname, "/images")));
 
 // Database Connect
 const database = require("./DB/database");
@@ -44,26 +43,25 @@ app.get("/", (req, res) => {
 
 // image upload
 const storage = multer.diskStorage({
-  destination:(req,file,fuun)=>{
-    fuun(null,"images");
+  destination: (req, file, fuun) => {
+    fuun(null, "images");
   },
-  filename:(req,file,fuun)=>{
-    fuun(null,req.body.img)
+  filename: (req, file, fuun) => {
+    fuun(null, req.body.img);
     // fuun(null,"hd.jpg")
-  }
+  },
 });
 
-const upload = multer({storage:storage})
-app.post("/api/upload",upload.single("file",(req,res)=>{
- 
+const upload = multer({ storage: storage });
+app.post(
+  "/api/upload",
+  upload.single("file", (req, res) => {
     res.status(200).json({
-      success:true,
-      message:"Image has been uploaded Successfully!"
-    })
-  
- 
-}))
-
+      success: true,
+      message: "Image has been uploaded Successfully!",
+    });
+  })
+);
 
 // middlewares
 require("dotenv").config();
