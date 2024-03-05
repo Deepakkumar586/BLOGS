@@ -8,7 +8,7 @@ const path = require("path");
 const multer = require("multer");
 
 // enable cors ---connect Express Middleware
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors());
 // app.use(cors({origin:"http://localhost:5173",credentials:true}))
 app.use(cookieParser());
 
@@ -65,7 +65,7 @@ app.post(
 
 // middlewares
 require("dotenv").config();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8010;
 
 app.listen(PORT, () => {
   console.log(`App is Running on Port ${PORT}`);
