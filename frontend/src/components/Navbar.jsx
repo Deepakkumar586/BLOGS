@@ -1,9 +1,8 @@
 import React, { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { IoSearchCircleSharp } from "react-icons/io5";
 import { FaBarsProgress } from "react-icons/fa6";
 import Menu from "./Menu";
-import { UserContext } from "../context/userContext";
+import { UserContext } from "../context/UserContext";
 
 const Navbar = () => {
   const [prompt, setPrompt] = useState("");
