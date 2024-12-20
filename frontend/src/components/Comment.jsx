@@ -13,7 +13,7 @@ const Comment = ({ c }) => {
       const res = await axios.delete("http://localhost:8000/api/comment/" + id, { withCredentials: true });
       window.location.reload(true);
     } catch (err) {
-      console.log("Delete Comment Problem On UI", err);
+      console.error("Delete Comment Problem On UI", err);
     }
   };
 

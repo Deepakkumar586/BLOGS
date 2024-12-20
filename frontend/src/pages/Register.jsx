@@ -28,10 +28,10 @@ const Register = () => {
       const res = await axios.post('http://localhost:8000/api/auth/register', registerData);
       setError(false);
       navigate('/login');
-      console.log(res);
+     
     } catch (err) {
       setError(true);
-      console.log('Form Submission failure', err);
+      console.error('Form Submission failure', err);
     }
     setRegisterData({
       username: '',

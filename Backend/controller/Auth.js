@@ -36,14 +36,13 @@ exports.userRegister = async (req, res) => {
       email,
       password: hashedpassword,
     });
-    console.log("Finally User Save in DB", saveUser);
     return res.status(200).json({
       success: true,
       saveUser,
       message: "User registered successfully",
     });
   } catch (err) {
-    console.log("Register Problem",err);
+    console.error("Register Problem", err);
     return res.status(500).json({
       success: false,
       message: err.message,
@@ -55,7 +54,7 @@ exports.userRegister = async (req, res) => {
 exports.userLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const findUser = await User.findOne({email});
+    const findUser = await User.findOne({ email });
     if (!findUser) {
       return res.status(404).json({
         success: false,
@@ -130,11 +129,11 @@ exports.userLogout = async (req, res) => {
 
 // If User refresh Web
 exports.refreshWeb = (req, res) => {
-  const token=req.cookies.token
-   jwt.verify(token,process.env.SECRET,{},async (err,data)=>{
-      if(err){
-          return res.status(404).json(err)
-      }
-      res.status(200).json(data)
-  })
+  const token = req.cookies.token;
+  jwt.verify(token, process.env.SECRET, {}, async (err, data) => {
+    if (err) {
+      return res.status(404).json(err);
+    }
+    res.status(200).json(data);
+  });
 };

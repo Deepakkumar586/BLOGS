@@ -27,20 +27,20 @@ const Login = () => {
       try {
          const res = await axios.post('http://localhost:8000/api/auth/login', loginData, { withCredentials: true });
          const { success, message } = res.data;
-         console.log(res.data);
+        
          if (success) {
             setError(false)
             setUser(res.data)
             navigate('/')
-            console.log("Login Successfully")
+            
          } else {
             setError(true);
-            console.log(message);
+            // console.error(message);
          }
       }
       catch (err) {
          setError(true);
-         console.log("Login Error", err);
+         console.error("Login Error", err);
       }
       setLoginData({
          email: '',

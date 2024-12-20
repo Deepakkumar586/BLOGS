@@ -9,8 +9,14 @@ const multer = require("multer");
 
 // enable cors ---connect Express Middleware
 // app.use(cors());
-app.use(cors({origin:"http://localhost:5173",credentials:true}))
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(cookieParser());
+// middlewares
+require("dotenv").config();
+const PORT = process.env.PORT || 8010;
+
+// path fro deployment
+const _dirname = path.resolve();
 
 // Middleware-->request ki body se data ko fetch karne ke liye use karte hai
 app.use(express.json());
@@ -33,13 +39,6 @@ app.use("/api/users", userRoutes);
 app.use("/api/blogs", blogRoutes);
 app.use("/api/comment", commentRoutes);
 
-// default routes
-app.get("/", (req, res) => {
-  return res.json({
-    success: true,
-    message: "Your server is up and running......",
-  });
-});
 
 // image upload
 const storage = multer.diskStorage({
@@ -63,9 +62,11 @@ app.post(
   })
 );
 
-// middlewares
-require("dotenv").config();
-const PORT = process.env.PORT || 8010;
+// deployment
+app.use(express.static(path.join(_dirname, "/frontend/dist")));
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(_dirname, "frontend", "dist", "index.html"));
+});
 
 app.listen(PORT, () => {
   console.log(`App is Running on Port ${PORT}`);

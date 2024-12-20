@@ -10,18 +10,18 @@ import { UserContext } from "../context/UserContext";
 
 const Home = () => {
   const { search } = useLocation();
-  console.log(search);
+  
   const [posts, setPosts] = useState([]);
   const [searchNoResult, setSearchNoResult] = useState(false);
   const [loader, setLoader] = useState(false);
   const { user } = useContext(UserContext);
-  console.log(user);
+
 
   const fetchPost = async () => {
     setLoader(true);
     try {
       const res = await axios.get("http://localhost:8000/api/blogs/" + search);
-      console.log(res.data.findBlog);
+     
       setPosts(res.data.findBlog);
       if (res.data.findBlog.length === 0) {
         setSearchNoResult(true);
@@ -30,7 +30,7 @@ const Home = () => {
       }
       setLoader(false);
     } catch (err) {
-      console.log("Post Fetch Error", err);
+      console.error("Post Fetch Error", err);
       setLoader(true);
     }
   };

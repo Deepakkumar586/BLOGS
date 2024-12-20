@@ -26,7 +26,7 @@ const EditPost = () => {
             setFile(res.data.findSingleBlog.image);
             setCats(res.data.findSingleBlog.categories);
         } catch (err) {
-            console.log("Update Error", err);
+            console.error("Update Error", err);
         }
     };
 
@@ -71,7 +71,7 @@ const EditPost = () => {
             try {
                 await axios.post("http://localhost:8000/api/upload", data);
             } catch (err) {
-                console.log("UI Image Upload Problem", err);
+                console.error("UI Image Upload Problem", err);
             }
         }
 
@@ -79,7 +79,7 @@ const EditPost = () => {
             const res = await axios.put(`http://localhost:8000/api/blogs/${postId}`, post, { withCredentials: true });
             navigate(`/posts/${res.data.updatedBlog._id}`);
         } catch (err) {
-            console.log("Blogs Update Problem", err);
+            console.error("Blogs Update Problem", err);
         }
     };
 

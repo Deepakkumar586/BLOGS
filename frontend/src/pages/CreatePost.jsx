@@ -51,16 +51,16 @@ const CreatePost = () => {
       try {
         await axios.post("http://localhost:8000/api/upload", data);
       } catch (err) {
-        console.log("UI Image Upload Problem", err);
+        console.error("UI Image Upload Problem", err);
       }
     }
 
     try {
       const res = await axios.post("http://localhost:8000/api/blogs/create", post, { withCredentials: true });
       navigate("/posts/" + res.data.saveBlog._id);
-      console.log("Create Data", res.data);
+      
     } catch (err) {
-      console.log("Blog Creation Problem", err);
+      console.error("Blog Creation Problem", err);
     }
   }
 

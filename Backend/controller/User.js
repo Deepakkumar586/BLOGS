@@ -16,8 +16,6 @@ exports.updateUser = async (req, res) => {
       { new: true }
     );
 
-    console.log("UPDATED USER", updateUser);
-
     res.status(200).json({
       success: true,
       updateUser,
@@ -37,13 +35,10 @@ exports.updateUser = async (req, res) => {
 exports.deleteUser = async (req, res) => {
   try {
     const deleteUser = await User.findByIdAndDelete(req.params.id);
-    console.log("USER DELETE", deleteUser);
 
     const deletePost = await Blog.deleteMany({ userId: req.params.id });
-    console.log("USER ALL POST DELETE", deletePost);
 
     const deleteComment = await Comment.deleteMany({ userId: req.params.id });
-    console.log("USER ALL COMMENT DELETE", deleteComment);
 
     res.status(200).json({
       success: true,
@@ -61,25 +56,20 @@ exports.deleteUser = async (req, res) => {
 
 // GET USERS
 // Example of a function that might cause the error
-exports.fetchUser = async (req,res) => {
+exports.fetchUser = async (req, res) => {
   // Check if userId is defined before querying the database
 
   try {
-    const userId = req.params.id
+    const userId = req.params.id;
     // Use Mongoose to query the database
     const findUser = await User.findById(userId);
     res.status(200).json({
-      success:true,
+      success: true,
       findUser,
-      message:"Get Successfully User"
-    })
-  } 
-  catch (error) {
+      message: "Get Successfully User",
+    });
+  } catch (error) {
     // Handle any other errors that might occur during the query
     return { error: "Error fetching user" };
   }
 };
-
-// Example of calling the function with an undefined userId
-// const result = fetchUser(undefined);
-// console.log(result); // { error: 'User ID is undefined' }

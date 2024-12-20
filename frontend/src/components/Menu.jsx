@@ -15,7 +15,7 @@ function Menu() {
       navigate("/login");
       setUser(null);
     } catch (err) {
-      console.log("UI Design Logout Problem", err);
+      console.error("UI Design Logout Problem", err);
     }
   };
 

@@ -30,7 +30,7 @@ const Profile = () => {
       setUsername(res.data.findUser.username);
       setEmail(res.data.findUser.email);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -45,7 +45,7 @@ const Profile = () => {
       setUpdated(true);
     } catch (err) {
       setUpdated(false);
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -58,7 +58,7 @@ const Profile = () => {
       setUser(null);
       navigate("/");
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -80,12 +80,12 @@ const Profile = () => {
           // Store the fetched data in localStorage
           localStorage.setItem(`userBlogs_${user?._id}`, JSON.stringify(findBlogUser));
         } else {
-          console.log("Blog fetch failed:", response.data.message);
+          console.error("Blog fetch failed:", response.data.message);
         }
       }
       setLoader(false);
     } catch (err) {
-      console.log("Post Fetch Error", err);
+      console.error("Post Fetch Error", err);
       setLoader(false); // Set loader to false in case of an error
     }
   };

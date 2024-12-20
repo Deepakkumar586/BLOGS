@@ -22,7 +22,7 @@ const MyBlogs = () => {
       setSearchNoResult(res.data.findBlogUser.length === 0); // Check if no results
       setLoader(false);  // Set loader to false after data is fetched
     } catch (err) {
-      console.log("Post Fetch Error", err);
+      console.error("Post Fetch Error", err);
       setLoader(false);  // Hide loader even on error
     }
   };

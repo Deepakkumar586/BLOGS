@@ -31,7 +31,7 @@ const PostDetails = () => {
       setLoader(false);
     } catch (err) {
       setLoader(true);
-      console.log("Id Fetch Error Blog", err);
+      console.error("Id Fetch Error Blog", err);
     }
   };
 
@@ -44,7 +44,7 @@ const PostDetails = () => {
       );
       navigate("/");
     } catch (err) {
-      console.log("UI DELETE PROBLEM", err);
+      console.error("UI DELETE PROBLEM", err);
     }
   };
 
@@ -56,7 +56,7 @@ const PostDetails = () => {
       );
       setComments(res.data.findBlogComment);
     } catch (err) {
-      console.log("Comment Fetch Problem", err);
+      console.error("Comment Fetch Problem", err);
     }
   };
 
@@ -76,7 +76,7 @@ const PostDetails = () => {
       );
       window.location.reload(true);
     } catch (err) {
-      console.log("Add Comment Problem on Post", err);
+      console.error("Add Comment Problem on Post", err);
     }
   };
 
