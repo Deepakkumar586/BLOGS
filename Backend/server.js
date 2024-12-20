@@ -4,7 +4,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const cloudinary = require("cloudinary").v2;
-const { CloudinaryStorage } = require("multer-storage-cloudinary"); // Optional for multer integration
+// const { CloudinaryStorage } = require("multer-storage-cloudinary"); // Optional for multer integration
 
 require("dotenv").config();
 
