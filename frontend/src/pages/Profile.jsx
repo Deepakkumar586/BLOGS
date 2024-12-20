@@ -6,6 +6,7 @@ import { UserContext } from "../context/UserContext";
 import axios from "axios";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Loader from "../components/Loader";
+import { motion } from "framer-motion"; // Import framer-motion
 
 const Profile = () => {
   const { search } = useLocation();
@@ -26,11 +27,8 @@ const Profile = () => {
       const res = await axios.get(
         "http://localhost:8000/api/users/" + user?._id
       );
-      console.log("PROFILE DATA USER FETCH", res.data);
-      console.log("hii")
       setUsername(res.data.findUser.username);
       setEmail(res.data.findUser.email);
-      // setPassword("")
     } catch (err) {
       console.log(err);
     }
@@ -95,13 +93,11 @@ const Profile = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Check if data is available in localStorage
         const storedBlogData = localStorage.getItem(`userBlogs_${user?._id}`);
 
         if (storedBlogData) {
           setUserblog(JSON.parse(storedBlogData));
         } else {
-          // Fetch data from the backend if not found in localStorage
           await fetchUserPosts();
         }
       } catch (error) {
@@ -113,35 +109,49 @@ const Profile = () => {
   }, []);
 
 
-
   useEffect(() => {
     fetchUserPosts();
-
   }, [user?._id]);
+
   return (
     <div>
       <Navbar />
-      <div className="px-8 md:px-[200px] mt-8 flex md:flex-row flex-col-reverse md:items-start">
+      <motion.div
+        className="px-8 md:px-[200px] mt-8 flex md:flex-row flex-col-reverse md:items-start"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
         {/* Left Part */}
-        <div className="flex flex-col  md:w-[70%] w-full mt-8 md:mt-0">
+        <motion.div
+          className="flex flex-col md:w-[70%] w-full mt-8 md:mt-0"
+          initial={{ x: -100 }}
+          animate={{ x: 0 }}
+          transition={{ duration: 0.5 }}
+        >
           <h1 className="text-xl font-bold mb-4">Your Blogs :</h1>
           <div className="px-8 md:px-[200px] min-h-[80vh]">
-            {loader ? <div className="h-[40vh] flex justify-center items-center"><Loader /></div> : !searchNoResult ?
+            {loader ? (
+              <div className="h-[40vh] flex justify-center items-center">
+                <Loader />
+              </div>
+            ) : !searchNoResult ? (
               userblog.map((p) => (
-                <>
-
-                  <ProfilePost key={p._id} p={p} />
-
-                </>
-
-              )) : <h3 className="text-center font-bold mt-16">No posts available</h3>}
+                <ProfilePost key={p._id} p={p} />
+              ))
+            ) : (
+              <h3 className="text-center font-bold mt-16">No posts available</h3>
+            )}
           </div>
+        </motion.div>
 
-
-        </div>
-
-        {/* Right part */}
-        <div className="md:sticky  md:top-12 flex justify-start md:justify-end items-start space-y-4 md:w-[30%] w-full md:items-end">
+        {/* Right Part */}
+        <motion.div
+          className="md:sticky md:top-12 flex justify-start md:justify-end items-start space-y-4 md:w-[30%] w-full md:items-end"
+          initial={{ x: 100 }}
+          animate={{ x: 0 }}
+          transition={{ duration: 0.5 }}
+        >
           <div className="flex flex-col space-y-4 items-start">
             <h1 className="text-xl font-bold mb-4">Profile</h1>
             <input
@@ -158,7 +168,6 @@ const Profile = () => {
               value={email}
               type="email"
             />
-            {/* <input onChange={(e)=>setPassword(e.target.value)} className='outline-none px-4 py-2 text-gray-500' placeholder='Your password' value={password} type='password'/> */}
             <div className="flex items-center space-x-4 mt-8">
               <button
                 onClick={handleUserUpdate}
@@ -179,8 +188,8 @@ const Profile = () => {
               </h3>
             )}
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       <Footer />
     </div>

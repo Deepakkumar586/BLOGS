@@ -8,8 +8,8 @@ const path = require("path");
 const multer = require("multer");
 
 // enable cors ---connect Express Middleware
-app.use(cors());
-// app.use(cors({origin:"http://localhost:5173",credentials:true}))
+// app.use(cors());
+app.use(cors({origin:"http://localhost:5173",credentials:true}))
 app.use(cookieParser());
 
 // Middleware-->request ki body se data ko fetch karne ke liye use karte hai
