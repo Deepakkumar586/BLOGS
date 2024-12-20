@@ -25,7 +25,7 @@ const Profile = () => {
   const fetchProfileUser = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:8000/api/users/" + user?._id
+        "https://blogs-4v8d.onrender.com/api/users/" + user?._id
       );
       setUsername(res.data.findUser.username);
       setEmail(res.data.findUser.email);
@@ -38,7 +38,7 @@ const Profile = () => {
     setUpdated(false);
     try {
       const res = await axios.put(
-        "http://localhost:8000/api/users/" + user?._id,
+        "https://blogs-4v8d.onrender.com/api/users/" + user?._id,
         { username, email },
         { withCredentials: true }
       );
@@ -52,7 +52,7 @@ const Profile = () => {
   const handleUserDelete = async () => {
     try {
       const res = await axios.delete(
-        "http://localhost:8000/api/users/" + user?._id,
+        "https://blogs-4v8d.onrender.com/api/users/" + user?._id,
         { withCredentials: true }
       );
       setUser(null);
@@ -70,7 +70,7 @@ const Profile = () => {
     setLoader(true);
     try {
       if (!dataFetched) {
-        const response = await axios.get(`http://localhost:8000/api/blogs/user/${user?._id}`);
+        const response = await axios.get(`https://blogs-4v8d.onrender.com/api/blogs/user/${user?._id}`);
         const { success, findBlogUser } = response.data;
 
         if (success) {

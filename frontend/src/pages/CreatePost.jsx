@@ -49,14 +49,14 @@ const CreatePost = () => {
       post.image = filename;
 
       try {
-        await axios.post("http://localhost:8000/api/upload", data);
+        await axios.post("https://blogs-4v8d.onrender.com/api/upload", data);
       } catch (err) {
         console.error("UI Image Upload Problem", err);
       }
     }
 
     try {
-      const res = await axios.post("http://localhost:8000/api/blogs/create", post, { withCredentials: true });
+      const res = await axios.post("https://blogs-4v8d.onrender.com/api/blogs/create", post, { withCredentials: true });
       navigate("/posts/" + res.data.saveBlog._id);
       
     } catch (err) {

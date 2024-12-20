@@ -20,7 +20,7 @@ const EditPost = () => {
     // Fetch the existing post to edit
     const fetchPost = async () => {
         try {
-            const res = await axios.get(`http://localhost:8000/api/blogs/${postId}`);
+            const res = await axios.get(`https://blogs-4v8d.onrender.com/api/blogs/${postId}`);
             setTitle(res.data.findSingleBlog.title);
             setDescription(res.data.findSingleBlog.description);
             setFile(res.data.findSingleBlog.image);
@@ -69,14 +69,14 @@ const EditPost = () => {
             post.image = filename;
 
             try {
-                await axios.post("http://localhost:8000/api/upload", data);
+                await axios.post("https://blogs-4v8d.onrender.com/api/upload", data);
             } catch (err) {
                 console.error("UI Image Upload Problem", err);
             }
         }
 
         try {
-            const res = await axios.put(`http://localhost:8000/api/blogs/${postId}`, post, { withCredentials: true });
+            const res = await axios.put(`https://blogs-4v8d.onrender.com/api/blogs/${postId}`, post, { withCredentials: true });
             navigate(`/posts/${res.data.updatedBlog._id}`);
         } catch (err) {
             console.error("Blogs Update Problem", err);

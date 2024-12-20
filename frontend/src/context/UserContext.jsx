@@ -8,7 +8,7 @@ export function UserContextProvider({ children }) {
 
   const getUser = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/auth/refetch", {
+      const res = await axios.get("https://blogs-4v8d.onrender.com/api/auth/refetch", {
         withCredentials: true,
       });
 

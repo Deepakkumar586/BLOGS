@@ -20,7 +20,7 @@ const Home = () => {
   const fetchPost = async () => {
     setLoader(true);
     try {
-      const res = await axios.get("http://localhost:8000/api/blogs/" + search);
+      const res = await axios.get("https://blogs-4v8d.onrender.com/api/blogs/" + search);
      
       setPosts(res.data.findBlog);
       if (res.data.findBlog.length === 0) {

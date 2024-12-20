@@ -9,7 +9,7 @@ const multer = require("multer");
 
 // enable cors ---connect Express Middleware
 // app.use(cors());
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors({ origin: "https://blogs-4v8d.onrender.com", credentials: true }));
 app.use(cookieParser());
 // middlewares
 require("dotenv").config();
@@ -38,7 +38,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/blogs", blogRoutes);
 app.use("/api/comment", commentRoutes);
-
 
 // image upload
 const storage = multer.diskStorage({

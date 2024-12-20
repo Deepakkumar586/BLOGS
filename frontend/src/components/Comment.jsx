@@ -10,7 +10,7 @@ const Comment = ({ c }) => {
 
   const deleteComment = async (id) => {
     try {
-      const res = await axios.delete("http://localhost:8000/api/comment/" + id, { withCredentials: true });
+      const res = await axios.delete("https://blogs-4v8d.onrender.com/api/comment/" + id, { withCredentials: true });
       window.location.reload(true);
     } catch (err) {
       console.error("Delete Comment Problem On UI", err);
