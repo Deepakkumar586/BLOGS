@@ -1,12 +1,13 @@
 const express = require("express");
-const app = express();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const cloudinary = require("cloudinary").v2;
-// const { CloudinaryStorage } = require("multer-storage-cloudinary"); // Optional for multer integration
+const multer = require("multer");
 
 require("dotenv").config();
+
+const app = express();
 
 // Enable CORS
 app.use(cors({ origin: "https://blogs-4v8d.onrender.com", credentials: true }));
@@ -19,6 +20,18 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+// Set storage engine for multer
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "Backend/uploads/"); // Save to 'uploads' folder in Backend
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname)); // Use timestamp for file naming
+  },
+});
+
+const upload = multer({ storage: storage }); // Multer setup for handling uploads
+
 // Database connection (Your existing code)
 const database = require("./DB/database");
 database.connect();
@@ -26,10 +39,10 @@ database.connect();
 // Middleware for JSON parsing
 app.use(express.json());
 
-// Static path for images (optional if you still want to serve from server)
-app.use("/images", express.static(path.join(__dirname, "/images")));
+// Static path for images (serve from 'uploads' folder)
+app.use("/uploads", express.static(path.join(__dirname, "Backend/uploads")));
 
-// Routes (your existing routes)
+// Routes
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/users");
 const blogRoutes = require("./routes/blog");
@@ -40,18 +53,25 @@ app.use("/api/users", userRoutes);
 app.use("/api/blogs", blogRoutes);
 app.use("/api/comment", commentRoutes);
 
-// Image Upload route using Cloudinary
-app.post("/api/upload", (req, res) => {
-  const file = req.files.file; // Assuming the field name is 'file'
+// Image Upload route using Cloudinary and Multer
+app.post("/api/upload", upload.single("file"), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ success: false, message: "No file uploaded" });
+  }
 
-  cloudinary.uploader.upload(file.tempFilePath, { folder: "blog_images" }, (error, result) => {
+  const filePath = req.file.path; // Access the file path from multer
+
+  // Upload the image to Cloudinary
+  cloudinary.uploader.upload(filePath, { folder: "blog_images" }, async (error, result) => {
     if (error) {
       return res.status(500).json({ success: false, message: "Image upload failed", error });
     }
+
+    // Send back the Cloudinary URL
     res.status(200).json({
       success: true,
       message: "Image has been uploaded successfully!",
-      url: result.secure_url, // URL of the uploaded image
+      url: result.secure_url, // Cloudinary image URL
     });
   });
 });
