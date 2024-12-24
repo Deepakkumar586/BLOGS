@@ -25,7 +25,7 @@ const Register = () => {
   const handleRegistrationSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:8000/api/auth/register', registerData);
+      const res = await axios.post('https://blogs-19nw.onrender.com/api/auth/register', registerData);
       setError(false);
       navigate('/login');
      

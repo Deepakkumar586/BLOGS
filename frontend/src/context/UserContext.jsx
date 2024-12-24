@@ -8,7 +8,7 @@ export function UserContextProvider({ children }) {
 
   const getUser = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/auth/refetch", {
+      const res = await axios.get("https://blogs-19nw.onrender.com/api/auth/refetch", {
         withCredentials: true, // ensures the cookie is sent
       });
 

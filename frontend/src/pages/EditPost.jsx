@@ -19,7 +19,7 @@ const EditPost = () => {
     // Fetch the existing post to edit
     const fetchPost = async () => {
         try {
-            const res = await axios.get(`http://localhost:8000/api/blogs/${postId}`);
+            const res = await axios.get(`https://blogs-19nw.onrender.com/api/blogs/${postId}`);
             setTitle(res.data.findSingleBlog.title);
             setDescription(res.data.findSingleBlog.description);
             setCats(res.data.findSingleBlog.categories);
@@ -57,7 +57,7 @@ const EditPost = () => {
         };
 
         try {
-            const res = await axios.put(`http://localhost:8000/api/blogs/${postId}`, post, { withCredentials: true });
+            const res = await axios.put(`https://blogs-19nw.onrender.com/api/blogs/${postId}`, post, { withCredentials: true });
             navigate(`/posts/${res.data.updatedBlog._id}`);
         } catch (err) {
             console.error("Blogs Update Problem", err);

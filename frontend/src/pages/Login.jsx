@@ -25,7 +25,7 @@ const Login = () => {
    const handleLoginSubmit = async (e) => {
       e.preventDefault();
       try {
-         const res = await axios.post('http://localhost:8000/api/auth/login', loginData, { withCredentials: true });
+         const res = await axios.post('https://blogs-19nw.onrender.com/api/auth/login', loginData, { withCredentials: true });
          const { success, message } = res.data;
         
          if (success) {

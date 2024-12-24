@@ -41,7 +41,7 @@ const CreateBlog = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/blogs/create",
+        "https://blogs-19nw.onrender.com/api/blogs/create",
         blogData,
         { withCredentials: true }
       );

@@ -27,7 +27,7 @@ const PostDetails = () => {
     setLoader(true);
     try {
       const res = await axios.get(
-        "http://localhost:8000/api/blogs/" + postIdURL.id
+        "https://blogs-19nw.onrender.com/api/blogs/" + postIdURL.id
       );
       setPost(res.data.findSingleBlog);
       setLoader(false);
@@ -40,7 +40,7 @@ const PostDetails = () => {
   // Delete post handler
   const handleDeletePost = async () => {
     try {
-      await axios.delete("http://localhost:8000/api/blogs/" + postIdURL.id, {
+      await axios.delete("https://blogs-19nw.onrender.com/api/blogs/" + postIdURL.id, {
         withCredentials: true,
       });
       navigate("/");
@@ -53,7 +53,7 @@ const PostDetails = () => {
   const fetchCommentPost = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:8000/api/comment/post/" + postIdURL.id
+        "https://blogs-19nw.onrender.com/api/comment/post/" + postIdURL.id
       );
       setComments(res.data.findBlogComment);
     } catch (err) {
@@ -69,7 +69,7 @@ const PostDetails = () => {
     }
     try {
       await axios.post(
-        "http://localhost:8000/api/comment/create",
+        "https://blogs-19nw.onrender.com/api/comment/create",
         {
           comment: comment1,
           author: user.username,
@@ -91,7 +91,7 @@ const PostDetails = () => {
     }
     try {
       await axios.put(
-        `http://localhost:8000/api/comment/${commentId}`,
+        `https://blogs-19nw.onrender.com/api/comment/${commentId}`,
         { comment: editComment },
         { withCredentials: true }
       );
@@ -225,7 +225,7 @@ const PostDetails = () => {
                     <button
                       onClick={async () => {
                         await axios.delete(
-                          `http://localhost:8000/api/comment/${c._id}`,
+                          `https://blogs-19nw.onrender.com/api/comment/${c._id}`,
                           { withCredentials: true }
                         );
                         fetchCommentPost();

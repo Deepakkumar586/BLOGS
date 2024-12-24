@@ -11,7 +11,7 @@ require("dotenv").config();
 const app = express();
 
 // Enable CORS
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors({ origin: "https://blogs-19nw.onrender.com", credentials: true }));
 app.use(cookieParser());
 
 // Cloudinary configuration
