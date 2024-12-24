@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion'; // Import framer-motion for animation
-import { IF } from "../url"; // Import URL for image source
 
 const ProfilePost = ({ p }) => {
+  // Define the base URL for Cloudinary
+  const cloudinaryBaseUrl = "https://res.cloudinary.com/du5xg6cck/image/upload/blog_images/";
+
   return (
     <motion.div
       className="w-full flex flex-col md:flex-row mt-8 space-x-0 md:space-x-4 shadow-lg hover:shadow-2xl rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105"
@@ -15,9 +17,10 @@ const ProfilePost = ({ p }) => {
         whileHover={{ scale: 1.1 }} // Animate on hover
         transition={{ duration: 0.3 }}
       >
+        {/* Dynamically load image using Cloudinary */}
         <img
-          src={IF + p.image}
-          alt={p.title}
+          src={`${cloudinaryBaseUrl}${p.image}`}
+          alt={p.title || "Post Image"}
           className="h-full w-full object-cover"
         />
       </motion.div>
