@@ -60,9 +60,12 @@ const PostDetails = () => {
     }
   };
 
-  // Post a comment
   const postComment = async (e) => {
     e.preventDefault();
+    if (!comment1.trim()) {
+      alert("Comment cannot be empty");
+      return;
+    }
     try {
       await axios.post(
         "https://blogs-4v8d.onrender.com/api/comment/create",
@@ -100,7 +103,9 @@ const PostDetails = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
           >
-            <h1 className="text-2xl font-bold text-black md:text-3xl">{post.title}</h1>
+            <h1 className="text-2xl font-bold text-black md:text-3xl">
+              {post.title}
+            </h1>
             {user?._id === post?.userId && (
               <div className="flex items-center justify-center space-x-2">
                 <p
