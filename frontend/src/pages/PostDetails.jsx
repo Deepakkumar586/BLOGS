@@ -40,7 +40,7 @@ const PostDetails = () => {
   // Delete post handler
   const handleDeletePost = async () => {
     try {
-      await axios.delete("https://blogs-19nw.onrender.com/api/blogs/" + postIdURL.id, {
+      await axios.delete("https://blogs-19nw.onrender.com/api/blogs" + postIdURL.id, {
         withCredentials: true,
       });
       navigate("/");

@@ -25,7 +25,7 @@ const Profile = () => {
   const fetchProfileUser = async () => {
     try {
       const res = await axios.get(
-        "https://blogs-19nw.onrender.com/api/users/" + user?._id
+        "https://blogs-19nw.onrender.com/api/users" + user?._id
       );
       setUsername(res.data.findUser.username);
       setEmail(res.data.findUser.email);
@@ -38,7 +38,7 @@ const Profile = () => {
     setUpdated(false);
     try {
       const res = await axios.put(
-        "https://blogs-19nw.onrender.com/api/users/" + user?._id,
+        "https://blogs-19nw.onrender.com/api/users" + user?._id,
         { username, email },
         { withCredentials: true }
       );
@@ -52,7 +52,7 @@ const Profile = () => {
   const handleUserDelete = async () => {
     try {
       const res = await axios.delete(
-        "https://blogs-19nw.onrender.com/api/users/" + user?._id,
+        "https://blogs-19nw.onrender.com/api/users" + user?._id,
         { withCredentials: true }
       );
       setUser(null);
