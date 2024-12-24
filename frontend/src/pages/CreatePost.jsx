@@ -46,7 +46,7 @@ const CreateBlog = () => {
         { withCredentials: true }
       );
 
-      console.log("Blog created successfully:", response.data);
+      // console.log("Blog created successfully:", response.data);
       navigate("/"); // Redirect after successful blog creation
     } catch (error) {
       console.error(

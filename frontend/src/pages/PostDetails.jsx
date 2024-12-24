@@ -14,9 +14,11 @@ import { IF } from "../url";
 const PostDetails = () => {
   const [comments, setComments] = useState([]);
   const [comment1, setComment1] = useState("");
+  const [editComment, setEditComment] = useState("");
   const [post, setPost] = useState({});
   const postIdURL = useParams();
   const [loader, setLoader] = useState(false);
+  const [editingCommentId, setEditingCommentId] = useState(null);
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
 
@@ -67,7 +69,7 @@ const PostDetails = () => {
     }
     try {
       await axios.post(
-        "https://blogs-4v8d.onrender.com/api/comment/create",
+        "http://localhost:8000/api/comment/create",
         {
           comment: comment1,
           author: user.username,
@@ -79,6 +81,25 @@ const PostDetails = () => {
       window.location.reload(true);
     } catch (err) {
       console.error("Add Comment Problem on Post", err);
+    }
+  };
+
+  const handleUpdateComment = async (commentId) => {
+    if (!editComment.trim()) {
+      alert("Comment cannot be empty");
+      return;
+    }
+    try {
+      await axios.put(
+        `http://localhost:8000/api/comment/${commentId}`,
+        { comment: editComment },
+        { withCredentials: true }
+      );
+      setEditingCommentId(null);
+      setEditComment("");
+      fetchCommentPost(); // Refresh comments
+    } catch (err) {
+      console.error("Update Comment Problem", err);
     }
   };
 
@@ -170,11 +191,52 @@ const PostDetails = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
           >
-            <h3 className="mt-6 mb-4 font-semibold text-indigo-600">
-              Comments:
-            </h3>
+            <h3 className="mt-6 mb-4 font-semibold text-indigo-600">Comments:</h3>
             {comments?.map((c, index) => (
-              <Comment key={index} c={c} />
+              <div key={index} className="border-b-2 pb-4 mb-4">
+                {editingCommentId === c._id ? (
+                  <div className="flex flex-col space-y-2">
+                    <textarea
+                      value={editComment}
+                      onChange={(e) => setEditComment(e.target.value)}
+                      className="border-2 border-gray-300 rounded-md p-2"
+                    />
+                    <button
+                      onClick={() => handleUpdateComment(c._id)}
+                      className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+                    >
+                      Update Comment
+                    </button>
+                  </div>
+                ) : (
+                  <Comment c={c} />
+                )}
+                {user?._id === c.userId && (
+                  <div className="flex space-x-4 mt-2">
+                    <button
+                      onClick={() => {
+                        setEditingCommentId(c._id);
+                        setEditComment(c.comment);
+                      }}
+                      className="text-indigo-600 hover:text-indigo-800"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={async () => {
+                        await axios.delete(
+                          `http://localhost:8000/api/comment/${c._id}`,
+                          { withCredentials: true }
+                        );
+                        fetchCommentPost();
+                      }}
+                      className="text-red-600 hover:text-red-800"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
+              </div>
             ))}
           </motion.div>
 

@@ -3,9 +3,9 @@ const Comment = require("../models/Comment");
 
 exports.createBlog = async (req, res) => {
   try {
-    console.log("Request Body:", req.body);
-    console.log("Request User ID:", req.userId); // From verifyToken middleware
-    console.log("Request Username:", req.username); // From verifyToken middleware
+    // console.log("Request Body:", req.body);
+    // console.log("Request User ID:", req.userId); // From verifyToken middleware
+    // console.log("Request Username:", req.username); // From verifyToken middleware
 
     // Extract userId and username from the request
     const userId = req.userId;
