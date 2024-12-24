@@ -1,8 +1,7 @@
-import { motion } from 'framer-motion'; // Import framer-motion for animation
+import { motion } from "framer-motion"; // Import framer-motion for animation
 
 const ProfilePost = ({ p }) => {
-  // Define the base URL for Cloudinary
-  const cloudinaryBaseUrl = "https://res.cloudinary.com/du5xg6cck/image/upload/blog_images/";
+  const cloudinaryBaseUrl = "https://res.cloudinary.com/du5xg6cck/image/upload/blog_images/>";
 
   return (
     <motion.div
@@ -14,12 +13,11 @@ const ProfilePost = ({ p }) => {
       {/* Left (Image) */}
       <motion.div
         className="w-full md:w-[35%] h-[200px] flex justify-center items-center overflow-hidden rounded-t-lg md:rounded-l-lg"
-        whileHover={{ scale: 1.1 }} // Animate on hover
+        whileHover={{ scale: 1.1 }}
         transition={{ duration: 0.3 }}
       >
-        {/* Dynamically load image using Cloudinary */}
         <img
-          src={`${cloudinaryBaseUrl}${p.image}`}
+          src={`${cloudinaryBaseUrl}${p.image}`} // Dynamically load image using Cloudinary
           alt={p.title || "Post Image"}
           className="h-full w-full object-cover"
         />
@@ -39,7 +37,6 @@ const ProfilePost = ({ p }) => {
           {p.title}
         </motion.h1>
 
-        {/* Post Metadata (Author, Date) */}
         <div className="flex mb-2 text-sm font-semibold text-gray-500 items-center justify-between md:mb-4">
           <p>@{p.username}</p>
           <div className="flex gap-2 ml-6 space-x-2">
@@ -48,7 +45,6 @@ const ProfilePost = ({ p }) => {
           </div>
         </div>
 
-        {/* Post Description */}
         <motion.p
           className="text-sm md:text-lg text-gray-700"
           whileHover={{ scale: 1.02 }}

@@ -1,8 +1,9 @@
 import { motion } from "framer-motion"; // Import framer-motion
 
 function HomePosts({ post }) {
-  // Cloudinary base URL for blog images
-  const cloudinaryBaseUrl = "https://res.cloudinary.com/du5xg6cck/image/upload/blog_images/";
+  // Ensure the correct Cloudinary URL
+  const cloudinaryBaseUrl =
+    "https://res.cloudinary.com/du5xg6cck/image/upload/blog_images/>";
 
   return (
     <motion.div
@@ -17,11 +18,10 @@ function HomePosts({ post }) {
         whileHover={{ scale: 1.1 }}
         transition={{ duration: 0.5 }}
       >
-        {/* Conditionally render the image if the URL is valid */}
         {post.image && (
           <img
-            src={`${cloudinaryBaseUrl}${post.image}`} // Use the Cloudinary base URL and the image name from the post object
-            alt="Post Image"
+            src={`${cloudinaryBaseUrl}${post.image}`} // Updated to use the full Cloudinary URL
+            alt={post.title || "Post Image"}
             className="h-full w-full object-cover"
           />
         )}
@@ -29,7 +29,6 @@ function HomePosts({ post }) {
 
       {/* Right Part (Text) */}
       <div className="w-full md:w-[65%] flex flex-col space-y-4 p-4 md:p-6">
-        {/* Post Title */}
         <motion.h1
           className="text-xl font-semibold md:text-2xl text-gray-800 hover:text-indigo-600 transition duration-200 ease-in-out"
           initial={{ y: 20, opacity: 0 }}
@@ -39,7 +38,6 @@ function HomePosts({ post }) {
           {post.title}
         </motion.h1>
 
-        {/* Post Metadata (Author and Date) */}
         <div className="flex items-center justify-between text-sm font-semibold text-gray-500 md:text-base">
           <p>@{post.username}</p>
           <div className="flex space-x-2">
@@ -48,7 +46,6 @@ function HomePosts({ post }) {
           </div>
         </div>
 
-        {/* Post Description */}
         <motion.p
           className="text-sm md:text-lg text-gray-700 hover:text-gray-900 transition duration-200 ease-in-out"
           initial={{ y: 20, opacity: 0 }}

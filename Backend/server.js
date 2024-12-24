@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const path = require("path");
 const cloudinary = require("cloudinary").v2;
 const multer = require("multer");
+const fs = require("fs"); // Import filesystem module
 
 require("dotenv").config();
 
@@ -62,18 +63,32 @@ app.post("/api/upload", upload.single("file"), (req, res) => {
   const filePath = req.file.path; // Access the file path from multer
 
   // Upload the image to Cloudinary
-  cloudinary.uploader.upload(filePath, { folder: "blog_images" }, async (error, result) => {
-    if (error) {
-      return res.status(500).json({ success: false, message: "Image upload failed", error });
-    }
+  cloudinary.uploader.upload(
+    filePath,
+    { folder: "blog_images" },
+    (error, result) => {
+      // Remove the temporary file from the server
+      fs.unlink(filePath, (unlinkErr) => {
+        if (unlinkErr) {
+          console.error("Failed to delete temporary file:", unlinkErr);
+        }
+      });
 
-    // Send back the Cloudinary URL
-    res.status(200).json({
-      success: true,
-      message: "Image has been uploaded successfully!",
-      url: result.secure_url, // Cloudinary image URL
-    });
-  });
+      if (error) {
+        console.error("Cloudinary Upload Error:", error);
+        return res
+          .status(500)
+          .json({ success: false, message: "Image upload failed", error });
+      }
+
+      // Send back the Cloudinary URL
+      res.status(200).json({
+        success: true,
+        message: "Image has been uploaded successfully!",
+        url: result.secure_url, // Cloudinary image URL
+      });
+    }
+  );
 });
 
 // Deployment code (optional)
