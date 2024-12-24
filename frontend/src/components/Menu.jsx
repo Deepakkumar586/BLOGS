@@ -9,7 +9,7 @@ function Menu() {
 
   const handleLogout = async () => {
     try {
-      const res = await axios.get("https://blogs-4v8d.onrender.com/api/auth/logout", {
+      const res = await axios.post("http://localhost:8000/api/auth/logout", {
         withCredentials: true,
       });
       navigate("/login");

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { RxCross2 } from "react-icons/rx";
@@ -15,33 +15,44 @@ const CreateBlog = () => {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
+  // Add a category to the list
   const addCategory = () => {
-    if (cat) {
+    if (cat.trim() !== "") {
       setCats([...cats, cat]);
-      setCat("");
+      setCat(""); // Clear input field after adding
     }
   };
 
+  // Delete a category from the list
   const deleteCategory = (index) => {
     setCats(cats.filter((_, i) => i !== index));
   };
 
+  // Handle blog creation form submission
   const handleCreate = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("description", desc);
-    formData.append("username", user.username);
-    formData.append("userId", user.id);
-    formData.append("categories", JSON.stringify(cats));
+    // Prepare the data to send in the request body
+    const blogData = {
+      title,
+      description: desc,
+      categories: cats, // Pass categories as an array
+    };
 
     try {
-      const response = await axios.post("/api/blogs", formData);
-      console.log(response.data);
-      navigate("/blogs"); // Redirect after blog creation
+      const response = await axios.post(
+        "http://localhost:8000/api/blogs/create",
+        blogData,
+        { withCredentials: true }
+      );
+
+      console.log("Blog created successfully:", response.data);
+      navigate("/"); // Redirect after successful blog creation
     } catch (error) {
-      console.error("Error creating blog:", error);
+      console.error(
+        "Error creating blog:",
+        error.response?.data || error.message
+      );
     }
   };
 
@@ -72,7 +83,7 @@ const CreateBlog = () => {
         >
           <motion.input
             onChange={(e) => setTitle(e.target.value)}
-            className="px-4 py-2 w-full outline-none rounded-md border border-gray-300 focus:border-blue-500"
+            className="px-4 text-black py-2 w-full outline-none rounded-md border border-gray-300 focus:border-blue-500"
             type="text"
             name="title"
             placeholder="Enter post title"
@@ -81,7 +92,7 @@ const CreateBlog = () => {
 
           <motion.textarea
             onChange={(e) => setDesc(e.target.value)}
-            className="px-4 py-2 w-full outline-none rounded-md border border-gray-300 focus:border-blue-500"
+            className="px-4 text-black py-2 w-full outline-none rounded-md border border-gray-300 focus:border-blue-500"
             rows="5"
             name="description"
             placeholder="Enter description"
@@ -91,7 +102,7 @@ const CreateBlog = () => {
           <div className="flex flex-col">
             <div className="flex items-center space-x-4">
               <motion.input
-                className="px-4 py-2 w-full outline-none rounded-md border border-gray-300 focus:border-blue-500"
+                className="px-4 text-black py-2 w-full outline-none rounded-md border border-gray-300 focus:border-blue-500"
                 value={cat}
                 onChange={(e) => setCat(e.target.value)}
                 type="text"

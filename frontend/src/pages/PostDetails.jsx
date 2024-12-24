@@ -25,7 +25,7 @@ const PostDetails = () => {
     setLoader(true);
     try {
       const res = await axios.get(
-        "https://blogs-4v8d.onrender.com/api/blogs/" + postIdURL.id
+        "http://localhost:8000/api/blogs/" + postIdURL.id
       );
       setPost(res.data.findSingleBlog);
       setLoader(false);
@@ -38,10 +38,9 @@ const PostDetails = () => {
   // Delete post handler
   const handleDeletePost = async () => {
     try {
-      await axios.delete(
-        "https://blogs-4v8d.onrender.com/api/blogs/" + postIdURL.id,
-        { withCredentials: true }
-      );
+      await axios.delete("http://localhost:8000/api/blogs/" + postIdURL.id, {
+        withCredentials: true,
+      });
       navigate("/");
     } catch (err) {
       console.error("UI DELETE PROBLEM", err);
@@ -52,7 +51,7 @@ const PostDetails = () => {
   const fetchCommentPost = async () => {
     try {
       const res = await axios.get(
-        "https://blogs-4v8d.onrender.com/api/comment/post/" + postIdURL.id
+        "http://localhost:8000/api/comment/post/" + postIdURL.id
       );
       setComments(res.data.findBlogComment);
     } catch (err) {
@@ -96,41 +95,41 @@ const PostDetails = () => {
           <Loader />
         </div>
       ) : (
-        <div className="px-8 md:px-[200px] mt-8 space-y-6 bg-gradient-to-r from-indigo-100 via-purple-200 to-pink-100">
+        <div className="px-8 md:px-[200px] mt-8 space-y-6">
           <motion.div
-            className="flex justify-between items-center border-b-2 border-gray-300 pb-4"
+            className="flex justify-between items-center border-b-4 border-indigo-500 pb-4 bg-white shadow-lg rounded-lg"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
           >
-            <h1 className="text-2xl font-bold text-black md:text-3xl">
+            <h1 className="text-2xl font-bold text-gray-900 md:text-3xl hover:text-indigo-700 transition duration-200 ease-in-out">
               {post.title}
             </h1>
             {user?._id === post?.userId && (
               <div className="flex items-center justify-center space-x-2">
                 <p
-                  className="cursor-pointer text-indigo-600 hover:text-indigo-800"
+                  className="cursor-pointer text-indigo-600 hover:text-indigo-800 transition-all duration-300"
                   onClick={() => navigate("/edit/" + postIdURL.id)}
                 >
-                  <AiTwotoneEdit />
+                  <AiTwotoneEdit size={24} />
                 </p>
                 <p
-                  className="cursor-pointer text-red-600 hover:text-red-800"
+                  className="cursor-pointer text-red-600 hover:text-red-800 transition-all duration-300"
                   onClick={handleDeletePost}
                 >
-                  <TiDelete />
+                  <TiDelete size={24} />
                 </p>
               </div>
             )}
           </motion.div>
 
           <motion.div
-            className="flex items-center justify-between mt-2 md:mt-4 text-sm text-gray-500 font-semibold"
+            className="flex items-center justify-between mt-2 md:mt-4 text-sm text-gray-600 font-semibold"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
           >
-            <p>@{post.username}</p>
+            <p className="text-gray-700">@{post.username}</p>
             <div className="flex space-x-2">
               <p>{new Date(post.updatedAt).toString().slice(0, 15)}</p>
               <p>{new Date(post.updatedAt).toString().slice(16, 24)}</p>
@@ -157,7 +156,7 @@ const PostDetails = () => {
               {post.categories?.map((cat, index) => (
                 <div
                   key={index}
-                  className="bg-gray-300 text-sm text-gray-800 rounded-lg px-3 py-1"
+                  className="bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-300 text-sm text-white rounded-lg px-3 py-1"
                 >
                   {cat}
                 </div>
@@ -171,7 +170,9 @@ const PostDetails = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
           >
-            <h3 className="mt-6 mb-4 font-semibold">Comments:</h3>
+            <h3 className="mt-6 mb-4 font-semibold text-indigo-600">
+              Comments:
+            </h3>
             {comments?.map((c, index) => (
               <Comment key={index} c={c} />
             ))}
@@ -191,7 +192,7 @@ const PostDetails = () => {
             />
             <button
               onClick={postComment}
-              className="bg-black text-white px-4 py-2 md:w-[20%] mt-4 md:mt-0 ml-4 rounded-md hover:bg-gray-800"
+              className="bg-indigo-600 text-white px-4 py-2 md:w-[20%] mt-4 md:mt-0 ml-4 rounded-md hover:bg-indigo-700 transition-all duration-300"
             >
               Add Comment
             </button>

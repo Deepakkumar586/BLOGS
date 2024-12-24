@@ -5,7 +5,7 @@ const {userRegister,userLogin, userLogout,refreshWeb} = require("../controller/A
 // REGISTER
 router.post("/register",userRegister);
 router.post("/login",userLogin);
-router.get("/logout",userLogout);
+router.post("/logout",userLogout);
 
 
 // Refresh user

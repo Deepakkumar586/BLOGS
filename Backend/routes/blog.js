@@ -12,7 +12,7 @@ const {
 } = require("../controller/Blog");
 const verifyToken = require("../verifyToken");
 
-router.post("/create", verifyToken, createBlog);
+router.post("/create",verifyToken, createBlog);
 router.put("/:id", verifyToken, updateBlog);
 router.delete("/:id", verifyToken, deleteBlog);
 router.get("/", getAllBlogs);

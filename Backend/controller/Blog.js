@@ -1,22 +1,52 @@
 const Blog = require("../models/Blog");
 const Comment = require("../models/Comment");
 
-// CREATE BLOG
 exports.createBlog = async (req, res) => {
   try {
-    const { username, userId, image } = req.body;
+    console.log("Request Body:", req.body);
+    console.log("Request User ID:", req.userId); // From verifyToken middleware
+    console.log("Request Username:", req.username); // From verifyToken middleware
 
-    if (!username || !userId) {
-      return res.status(400).json({ success: false, message: "Username and UserId are required." });
+    // Extract userId and username from the request
+    const userId = req.userId;
+    const username = req.username;
+
+    const { title, description, categories } = req.body;
+
+    // Validation
+    if (!username || !userId || !title || !description) {
+      return res.status(400).json({
+        success: false,
+        message: "Username, UserId, Title, and Description are required.",
+      });
     }
 
-    const newBlog = new Blog(req.body);
-    const saveBlog = await newBlog.save();
+    // If categories is passed as an array, no need to parse it
+    // If categories is not an array, default to an empty array
+    const parsedCategories = Array.isArray(categories) ? categories : [];
 
-    res.status(200).json({ success: true, saveBlog, message: "New Blog Saved in DB" });
+    // Create the new blog
+    const newBlog = new Blog({
+      username,
+      userId,
+      title,
+      description,
+      categories: parsedCategories,
+    });
+
+    // Save the blog to the database
+    const savedBlog = await newBlog.save();
+    res.status(200).json({
+      success: true,
+      savedBlog,
+      message: "New Blog Saved in DB",
+    });
   } catch (err) {
     console.error("Blog Creation Error:", err.message);
-    res.status(500).json({ success: false, message: "Blog Creation Problem" });
+    res.status(500).json({
+      success: false,
+      message: "Blog Creation Problem",
+    });
   }
 };
 
@@ -24,13 +54,14 @@ exports.createBlog = async (req, res) => {
 // UPDATE BLOG
 exports.updateBlog = async (req, res) => {
   try {
-    const { title, description, categories,} = req.body;
+    const { title, description, categories } = req.body;
 
     // Check if the required fields are provided
     if (!title || !description || !categories) {
       return res.status(400).json({
         success: false,
-        message: "Please provide all required fields: title, description, and categories.",
+        message:
+          "Please provide all required fields: title, description, and categories.",
       });
     }
 
@@ -67,7 +98,6 @@ exports.updateBlog = async (req, res) => {
     });
   }
 };
-
 
 exports.deleteBlog = async (req, res) => {
   try {

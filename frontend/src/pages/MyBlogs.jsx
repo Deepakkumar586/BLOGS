@@ -17,7 +17,7 @@ const MyBlogs = () => {
 
   const fetchPost = async () => {
     try {
-      const res = await axios.get("https://blogs-4v8d.onrender.com/api/blogs/user/" + user?._id);
+      const res = await axios.get("http://localhost:8000/api/blogs/user/" + user?._id);
       setPosts(res.data.findBlogUser);
       setSearchNoResult(res.data.findBlogUser.length === 0); // Check if no results
       setLoader(false);  // Set loader to false after data is fetched

@@ -25,7 +25,7 @@ const Profile = () => {
   const fetchProfileUser = async () => {
     try {
       const res = await axios.get(
-        "https://blogs-4v8d.onrender.com/api/users/" + user?._id
+        "http://localhost:8000/api/users/" + user?._id
       );
       setUsername(res.data.findUser.username);
       setEmail(res.data.findUser.email);
@@ -38,7 +38,7 @@ const Profile = () => {
     setUpdated(false);
     try {
       const res = await axios.put(
-        "https://blogs-4v8d.onrender.com/api/users/" + user?._id,
+        "http://localhost:8000/api/users/" + user?._id,
         { username, email },
         { withCredentials: true }
       );
@@ -52,7 +52,7 @@ const Profile = () => {
   const handleUserDelete = async () => {
     try {
       const res = await axios.delete(
-        "https://blogs-4v8d.onrender.com/api/users/" + user?._id,
+        "http://localhost:8000/api/users/" + user?._id,
         { withCredentials: true }
       );
       setUser(null);
@@ -70,7 +70,7 @@ const Profile = () => {
     setLoader(true);
     try {
       if (!dataFetched) {
-        const response = await axios.get(`https://blogs-4v8d.onrender.com/api/blogs/user/${user?._id}`);
+        const response = await axios.get(`http://localhost:8000/api/blogs/user/${user?._id}`);
         const { success, findBlogUser } = response.data;
 
         if (success) {
@@ -121,7 +121,7 @@ const Profile = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        {/* Left Part */}
+        {/* Left Part (User Blogs) */}
         <motion.div
           className="flex flex-col md:w-[70%] w-full mt-8 md:mt-0"
           initial={{ x: -100 }}
@@ -144,24 +144,24 @@ const Profile = () => {
           </div>
         </motion.div>
 
-        {/* Right Part */}
+        {/* Right Part (Profile Details) */}
         <motion.div
-          className="md:sticky md:top-12 flex justify-start md:justify-end items-start space-y-6 md:w-[30%] w-full md:items-end bg-gray-50 rounded-lg p-6 shadow-md"
+          className="md:sticky  md:top-12 flex flex-col ml-8 justify-start md:justify-end items-start space-y-6 md:w-[30%] w-full md:items-end bg-gradient-to-r from-indigo-100 via-purple-200 to-pink-100 rounded-lg p-6 shadow-xl"
           initial={{ x: 100 }}
           animate={{ x: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h1 className="text-2xl font-semibold text-black mb-4">Profile</h1>
+          <h1 className="text-2xl font-semibold  text-black mb-4 hover:text-indigo-500">Profile</h1>
           <input
             onChange={(e) => setUsername(e.target.value)}
-            className="w-full outline-none px-4 py-2 mb-4 rounded-md border border-gray-300 text-gray-700"
+            className="w-full outline-none px-4 py-2 mb-4 rounded-md border-2 border-gray-300 text-gray-700"
             placeholder="Your username"
             value={username}
             type="text"
           />
           <input
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full outline-none px-4 py-2 mb-6 rounded-md border border-gray-300 text-gray-700"
+            className="w-full outline-none px-4 py-2 mb-6 rounded-md border-2 border-gray-300 text-gray-700"
             placeholder="Your email"
             value={email}
             type="email"
@@ -181,9 +181,14 @@ const Profile = () => {
             </button>
           </div>
           {updated && (
-            <h3 className="text-green-500 text-center mt-4 font-medium">
+            <motion.h3
+              className="text-green-500 text-center mt-4 font-medium"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
               User Updated Successfully
-            </h3>
+            </motion.h3>
           )}
         </motion.div>
       </motion.div>

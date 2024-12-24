@@ -11,7 +11,7 @@ require("dotenv").config();
 const app = express();
 
 // Enable CORS
-app.use(cors({ origin: "https://blogs-4v8d.onrender.com", credentials: true }));
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(cookieParser());
 
 // Cloudinary configuration
@@ -92,11 +92,11 @@ app.post("/api/upload", upload.single("file"), (req, res) => {
 });
 
 // Deployment code (optional)
-const _dirname = path.resolve();
-app.use(express.static(path.join(_dirname, "/frontend/dist")));
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(_dirname, "frontend", "dist", "index.html"));
-});
+// const _dirname = path.resolve();
+// app.use(express.static(path.join(_dirname, "/frontend/dist")));
+// app.get("*", (req, res) => {
+//   res.sendFile(path.resolve(_dirname, "frontend", "dist", "index.html"));
+// });
 
 // Server start
 const PORT = process.env.PORT || 8010;

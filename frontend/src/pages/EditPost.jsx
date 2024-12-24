@@ -19,7 +19,7 @@ const EditPost = () => {
     // Fetch the existing post to edit
     const fetchPost = async () => {
         try {
-            const res = await axios.get(`https://blogs-4v8d.onrender.com/api/blogs/${postId}`);
+            const res = await axios.get(`http://localhost:8000/api/blogs/${postId}`);
             setTitle(res.data.findSingleBlog.title);
             setDescription(res.data.findSingleBlog.description);
             setCats(res.data.findSingleBlog.categories);
@@ -57,7 +57,7 @@ const EditPost = () => {
         };
 
         try {
-            const res = await axios.put(`https://blogs-4v8d.onrender.com/api/blogs/${postId}`, post, { withCredentials: true });
+            const res = await axios.put(`http://localhost:8000/api/blogs/${postId}`, post, { withCredentials: true });
             navigate(`/posts/${res.data.updatedBlog._id}`);
         } catch (err) {
             console.error("Blogs Update Problem", err);
@@ -65,7 +65,7 @@ const EditPost = () => {
     };
 
     return (
-        <div className="bg-gradient-to-r from-teal-500 to-indigo-600 min-h-screen text-white">
+        <div className="bg-gradient-to-r from-teal-500 to-indigo-600 min-h-screen text-black">
             <Navbar />
             <motion.div
                 className="max-w-4xl mx-auto px-6 py-12 bg-white rounded-lg shadow-xl mt-8"
@@ -92,7 +92,7 @@ const EditPost = () => {
                     <motion.input
                         onChange={(e) => setTitle(e.target.value)}
                         value={title}
-                        className="px-4 py-2 w-full rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                        className="px-4 py-3 w-full rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
                         type="text"
                         placeholder="Enter post title"
                         required
@@ -105,7 +105,7 @@ const EditPost = () => {
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         rows={8}
-                        className="px-4 py-2 w-full rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                        className="px-4 py-3 w-full rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
                         placeholder="Write your post description here..."
                         required
                         initial={{ x: -50, opacity: 0 }}
@@ -116,7 +116,7 @@ const EditPost = () => {
                     <div className="flex flex-col">
                         <div className="flex items-center space-x-4">
                             <motion.input
-                                className="px-4 py-2 w-full rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                                className="px-4 py-3 w-full rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
                                 value={cat}
                                 onChange={(e) => setCat(e.target.value)}
                                 type="text"
@@ -127,7 +127,7 @@ const EditPost = () => {
                             />
                             <div
                                 onClick={addCategory}
-                                className="bg-teal-500 text-white px-4 py-2 rounded-md cursor-pointer"
+                                className="bg-teal-500 text-white px-4 py-3 rounded-md cursor-pointer"
                             >
                                 Add
                             </div>
@@ -156,7 +156,7 @@ const EditPost = () => {
 
                     <motion.button
                         type="submit"
-                        className="bg-teal-600 w-full md:w-[30%] mx-auto text-white font-semibold px-4 py-2 text-lg rounded-md transition-all hover:bg-teal-700"
+                        className="bg-teal-600 w-full md:w-[30%] mx-auto text-white font-semibold px-4 py-3 text-lg rounded-md transition-all hover:bg-teal-700"
                         initial={{ scale: 0.9 }}
                         animate={{ scale: 1 }}
                         transition={{ duration: 0.3 }}

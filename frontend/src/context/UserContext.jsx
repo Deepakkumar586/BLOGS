@@ -8,16 +8,17 @@ export function UserContextProvider({ children }) {
 
   const getUser = async () => {
     try {
-      const res = await axios.get("https://blogs-4v8d.onrender.com/api/auth/refetch", {
-        withCredentials: true,
+      const res = await axios.get("http://localhost:8000/api/auth/refetch", {
+        withCredentials: true, // ensures the cookie is sent
       });
 
       // Check if res.data is not null or undefined before accessing its properties
       if (res.data) {
+        // console.log("User data received:", res.data);
         setUser(res.data);
       }
     } catch (err) {
-      console.error(err);
+      console.error("Error fetching user:", err.response?.data || err.message);
     }
   };
 

@@ -1,28 +1,37 @@
 const jwt = require('jsonwebtoken');
-require("dotenv").config();
 
+const verifyToken = (req, res, next) => {
+  const token = req.cookies.token;
 
-// FOR LOGIN LOGOUT VERIFY TOKEN MIDDLEWARE
-const verifyToken=(req,res,next)=>{
-    const token=req.cookies.token
-    if(!token){
-        res.status(401).json({
-            success:false,
-            message:"Sorry,You Are not Authenticated.."
-        })
+  if (!token) {
+    return res.status(401).json({
+      success: false,
+      message: "You are not authenticated.",
+    });
+  }
+
+  // Decode the token to check expiration
+  jwt.verify(token, process.env.SECRET, (err, data) => {
+    if (err) {
+      return res.status(401).json({
+        success: false,
+        message: "Token is not valid.",
+      });
     }
 
-    // IF TOKEN IS EXIST THEN VERIFY
-    jwt.verify(token,process.env.SECRET,async(err,data)=>{
-        if(err){
-            return res.status(401).json({
-                success:false,
-                message:"Token Is Not Valid."
-            })
-        }
-        req.userId=data._id
-        // console.log("Passed");
-        next();
-    })
-}
-module.exports=verifyToken
+    // Check if token is expired
+    const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+    if (currentTime > data.exp) {
+      return res.status(401).json({
+        success: false,
+        message: "Token has expired. Please log in again.",
+      });
+    }
+
+    req.userId = data._id;
+    req.username = data.username;  // Assuming username is part of the token payload
+    next();
+  });
+};
+
+module.exports = verifyToken;
