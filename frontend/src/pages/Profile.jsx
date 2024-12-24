@@ -6,7 +6,7 @@ import { UserContext } from "../context/UserContext";
 import axios from "axios";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Loader from "../components/Loader";
-import { motion } from "framer-motion"; // Import framer-motion
+import { motion } from "framer-motion"; 
 
 const Profile = () => {
   const { search } = useLocation();
@@ -108,7 +108,6 @@ const Profile = () => {
     fetchData();
   }, []);
 
-
   useEffect(() => {
     fetchUserPosts();
   }, [user?._id]);
@@ -129,8 +128,8 @@ const Profile = () => {
           animate={{ x: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h1 className="text-xl font-bold mb-4">Your Blogs :</h1>
-          <div className="px-8 md:px-[200px] min-h-[80vh]">
+          <h1 className="text-2xl font-bold text-black mb-4">Your Blogs</h1>
+          <div className="min-h-[80vh]">
             {loader ? (
               <div className="h-[40vh] flex justify-center items-center">
                 <Loader />
@@ -140,54 +139,52 @@ const Profile = () => {
                 <ProfilePost key={p._id} p={p} />
               ))
             ) : (
-              <h3 className="text-center font-bold mt-16">No posts available</h3>
+              <h3 className="text-center font-semibold text-xl mt-16 text-gray-500">No posts available</h3>
             )}
           </div>
         </motion.div>
 
         {/* Right Part */}
         <motion.div
-          className="md:sticky md:top-12 flex justify-start md:justify-end items-start space-y-4 md:w-[30%] w-full md:items-end"
+          className="md:sticky md:top-12 flex justify-start md:justify-end items-start space-y-6 md:w-[30%] w-full md:items-end bg-gray-50 rounded-lg p-6 shadow-md"
           initial={{ x: 100 }}
           animate={{ x: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="flex flex-col space-y-4 items-start">
-            <h1 className="text-xl font-bold mb-4">Profile</h1>
-            <input
-              onChange={(e) => setUsername(e.target.value)}
-              className="outline-none px-4 py-2 text-gray-500"
-              placeholder="Your username"
-              value={username}
-              type="text"
-            />
-            <input
-              onChange={(e) => setEmail(e.target.value)}
-              className="outline-none px-4 py-2 text-gray-500"
-              placeholder="Your email"
-              value={email}
-              type="email"
-            />
-            <div className="flex items-center space-x-4 mt-8">
-              <button
-                onClick={handleUserUpdate}
-                className="text-white font-semibold bg-black px-4 py-2 hover:text-black hover:bg-gray-400"
-              >
-                Update
-              </button>
-              <button
-                onClick={handleUserDelete}
-                className="text-white font-semibold bg-black px-4 py-2 hover:text-black hover:bg-gray-400"
-              >
-                Delete Account
-              </button>
-            </div>
-            {updated && (
-              <h3 className="text-green-500 text-em text-center mt-4">
-                User Updated Successfully
-              </h3>
-            )}
+          <h1 className="text-2xl font-semibold text-black mb-4">Profile</h1>
+          <input
+            onChange={(e) => setUsername(e.target.value)}
+            className="w-full outline-none px-4 py-2 mb-4 rounded-md border border-gray-300 text-gray-700"
+            placeholder="Your username"
+            value={username}
+            type="text"
+          />
+          <input
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full outline-none px-4 py-2 mb-6 rounded-md border border-gray-300 text-gray-700"
+            placeholder="Your email"
+            value={email}
+            type="email"
+          />
+          <div className="flex items-center space-x-4 mt-8">
+            <button
+              onClick={handleUserUpdate}
+              className="text-white font-semibold bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-md transition-all"
+            >
+              Update
+            </button>
+            <button
+              onClick={handleUserDelete}
+              className="text-white font-semibold bg-red-600 hover:bg-red-700 px-6 py-2 rounded-md transition-all"
+            >
+              Delete Account
+            </button>
           </div>
+          {updated && (
+            <h3 className="text-green-500 text-center mt-4 font-medium">
+              User Updated Successfully
+            </h3>
+          )}
         </motion.div>
       </motion.div>
 

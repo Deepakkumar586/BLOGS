@@ -93,9 +93,9 @@ const PostDetails = () => {
           <Loader />
         </div>
       ) : (
-        <div className="px-8 md:px-[200px] mt-8 space-y-6">
+        <div className="px-8 md:px-[200px] mt-8 space-y-6 bg-gradient-to-r from-indigo-100 via-purple-200 to-pink-100">
           <motion.div
-            className="flex justify-between items-center"
+            className="flex justify-between items-center border-b-2 border-gray-300 pb-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
@@ -104,12 +104,15 @@ const PostDetails = () => {
             {user?._id === post?.userId && (
               <div className="flex items-center justify-center space-x-2">
                 <p
-                  className="cursor-pointer"
+                  className="cursor-pointer text-indigo-600 hover:text-indigo-800"
                   onClick={() => navigate("/edit/" + postIdURL.id)}
                 >
                   <AiTwotoneEdit />
                 </p>
-                <p className="cursor-pointer" onClick={handleDeletePost}>
+                <p
+                  className="cursor-pointer text-red-600 hover:text-red-800"
+                  onClick={handleDeletePost}
+                >
                   <TiDelete />
                 </p>
               </div>
@@ -117,7 +120,7 @@ const PostDetails = () => {
           </motion.div>
 
           <motion.div
-            className="flex items-center justify-between mt-2 md:mt-4"
+            className="flex items-center justify-between mt-2 md:mt-4 text-sm text-gray-500 font-semibold"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
@@ -129,17 +132,8 @@ const PostDetails = () => {
             </div>
           </motion.div>
 
-          <motion.img
-            src={IF + post.image}
-            className="w-full mx-auto mt-8"
-            alt=""
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
-          />
-
           <motion.p
-            className="mx-auto mt-8"
+            className="mx-auto mt-8 text-lg text-gray-700 leading-relaxed border-t-2 border-gray-300 pt-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
@@ -153,10 +147,13 @@ const PostDetails = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
           >
-            <p>categories:</p>
+            <p>Categories:</p>
             <div className="flex justify-center items-center space-x-2">
               {post.categories?.map((cat, index) => (
-                <div key={index} className="bg-gray-300 rounded-lg px-3 py-1">
+                <div
+                  key={index}
+                  className="bg-gray-300 text-sm text-gray-800 rounded-lg px-3 py-1"
+                >
                   {cat}
                 </div>
               ))}
@@ -183,13 +180,13 @@ const PostDetails = () => {
           >
             <input
               onChange={(e) => setComment1(e.target.value)}
-              className="md:w-[90%] outline-none py-2 px-4 mt-4 md:mt-0"
+              className="md:w-[90%] outline-none py-2 px-4 mt-4 md:mt-0 border-2 border-gray-300 rounded-md"
               type="text"
               placeholder="Write your own words"
             />
             <button
               onClick={postComment}
-              className="bg-black text-white px-4 py-2 md:w-[20%] mt-4 md:mt-0"
+              className="bg-black text-white px-4 py-2 md:w-[20%] mt-4 md:mt-0 ml-4 rounded-md hover:bg-gray-800"
             >
               Add Comment
             </button>

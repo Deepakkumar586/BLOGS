@@ -24,46 +24,87 @@ exports.createBlog = async (req, res) => {
 // UPDATE BLOG
 exports.updateBlog = async (req, res) => {
   try {
+    const { title, description, categories,} = req.body;
+
+    // Check if the required fields are provided
+    if (!title || !description || !categories) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide all required fields: title, description, and categories.",
+      });
+    }
+
+    // Attempt to find and update the blog post by its ID
     const updatedBlog = await Blog.findByIdAndUpdate(
       req.params.id,
       { $set: req.body },
-      { new: true }
+      { new: true, runValidators: true } // Ensures that the updated blog is returned and runs validation checks
     );
 
+    // Check if the blog post exists
+    if (!updatedBlog) {
+      return res.status(404).json({
+        success: false,
+        message: "Blog not found.",
+      });
+    }
+
+    // Send success response with the updated blog data
     res.status(200).json({
       success: true,
       updatedBlog,
-      message: "Blog Updated Successfully",
+      message: "Blog updated successfully.",
     });
   } catch (error) {
-    console.error(error);
-    // Return 500 Internal Server Error status code with error message
+    // Log the error for debugging
+    console.error("Error updating blog:", error);
+
+    // Return 500 Internal Server Error status code with a more descriptive error message
     return res.status(500).json({
       success: false,
-      message: `Update Blog Failure Please Try Again`,
+      message: `Failed to update the blog. Please try again later.`,
+      error: error.message, // Optionally include error message for debugging purposes
     });
   }
 };
 
-// DELETE BLOG
+
 exports.deleteBlog = async (req, res) => {
   try {
-    const deleteBlog = await Blog.findByIdAndDelete(req.params.id);
+    // Find and delete the blog by its ID
+    const deletedBlog = await Blog.findByIdAndDelete(req.params.id);
 
-    const commentDelete = await Comment.deleteMany({ postId: req.params.id });
+    // Check if the blog exists before trying to delete comments
+    if (!deletedBlog) {
+      return res.status(404).json({
+        success: false,
+        message: "Blog not found.",
+      });
+    }
 
+    // Delete all comments related to the deleted blog post
+    const deletedComments = await Comment.deleteMany({ postId: req.params.id });
+
+    // Respond with success message
     res.status(200).json({
       success: true,
-      message: "Blog has been DELETED",
+      message: "Blog and associated comments have been deleted.",
+      deletedBlog,
+      deletedCommentsCount: deletedComments.deletedCount, // Optional: Include how many comments were deleted
     });
   } catch (err) {
-    console.error(err);
+    // Log the error for debugging
+    console.error("Error deleting blog:", err);
+
+    // Return 500 Internal Server Error status code with a more descriptive message
     res.status(500).json({
       success: false,
-      message: "Delete Blog Problemm",
+      message: "An error occurred while deleting the blog. Please try again.",
+      error: err.message, // Optionally include error message for debugging purposes
     });
   }
 };
+
 // GET All BLOG
 exports.getAllBlogs = async (req, res) => {
   try {

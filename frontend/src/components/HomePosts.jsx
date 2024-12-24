@@ -1,36 +1,17 @@
-import { motion } from "framer-motion"; // Import framer-motion
+import { motion } from "framer-motion";
 
 function HomePosts({ post }) {
-  // Ensure the correct Cloudinary URL
-  const cloudinaryBaseUrl =
-    "https://res.cloudinary.com/du5xg6cck/image/upload/blog_images/>";
-
   return (
     <motion.div
-      className="w-full flex flex-col md:flex-row mt-8 space-y-4 md:space-y-0 md:space-x-4 hover:scale-105 transition-transform duration-300 ease-in-out"
+      className="w-full flex flex-col mt-8 space-y-4 bg-gradient-to-r from-indigo-50 via-purple-100 to-pink-50 rounded-lg shadow-lg hover:scale-105 transition-transform duration-300 ease-in-out"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      {/* Left Part (Image) */}
-      <motion.div
-        className="w-full md:w-[35%] h-[200px] rounded-lg overflow-hidden shadow-lg"
-        whileHover={{ scale: 1.1 }}
-        transition={{ duration: 0.5 }}
-      >
-        {post.image && (
-          <img
-            src={`${cloudinaryBaseUrl}${post.image}`} // Updated to use the full Cloudinary URL
-            alt={post.title || "Post Image"}
-            className="h-full w-full object-cover"
-          />
-        )}
-      </motion.div>
-
       {/* Right Part (Text) */}
-      <div className="w-full md:w-[65%] flex flex-col space-y-4 p-4 md:p-6">
+      <div className="w-full flex flex-col space-y-4 p-6">
         <motion.h1
-          className="text-xl font-semibold md:text-2xl text-gray-800 hover:text-indigo-600 transition duration-200 ease-in-out"
+          className="text-xl font-semibold text-gray-800 hover:text-indigo-600 transition duration-200 ease-in-out"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}

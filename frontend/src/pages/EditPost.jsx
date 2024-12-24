@@ -1,19 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { RxCross2 } from "react-icons/rx";
 import { useNavigate, useParams } from 'react-router-dom';
-import axios  from 'axios';
+import axios from 'axios';
 import { UserContext } from '../context/UserContext';
 import { motion } from 'framer-motion';
 
 const EditPost = () => {
-    const { user } = useContext(UserContext)
-    const navigate  =  useNavigate(); 
+    const { user } = useContext(UserContext);
+    const navigate = useNavigate();
     const postId = useParams().id;
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [file, setFile] = useState(null);
     const [cat, setCat] = useState("");
     const [cats, setCats] = useState([]);
 
@@ -23,7 +22,6 @@ const EditPost = () => {
             const res = await axios.get(`https://blogs-4v8d.onrender.com/api/blogs/${postId}`);
             setTitle(res.data.findSingleBlog.title);
             setDescription(res.data.findSingleBlog.description);
-            setFile(res.data.findSingleBlog.image);
             setCats(res.data.findSingleBlog.categories);
         } catch (err) {
             console.error("Update Error", err);
@@ -36,17 +34,15 @@ const EditPost = () => {
 
     // Add category
     const addCategory = () => {
-        let updatedCats = [...cats];
-        updatedCats.push(cat);
-        setCat("");
-        setCats(updatedCats);
+        if (cat) {
+            setCats([...cats, cat]);
+            setCat("");
+        }
     };
 
     // Delete category
     const deleteCategory = (i) => {
-        let updatedCats = [...cats];
-        updatedCats.splice(i, 1);
-        setCats(updatedCats);
+        setCats(cats.filter((_, index) => index !== i));
     };
 
     // Handle post update
@@ -55,25 +51,10 @@ const EditPost = () => {
         const post = {
             title,
             description,
-            file,
             username: user.username,
             userId: user._id,
             categories: cats,
         };
-
-        if (file) {
-            const data = new FormData();
-            const filename = Date.now() + file.name;
-            data.append("img", filename);
-            data.append("file", file);
-            post.image = filename;
-
-            try {
-                await axios.post("https://blogs-4v8d.onrender.com/api/upload", data);
-            } catch (err) {
-                console.error("UI Image Upload Problem", err);
-            }
-        }
 
         try {
             const res = await axios.put(`https://blogs-4v8d.onrender.com/api/blogs/${postId}`, post, { withCredentials: true });
@@ -84,26 +65,25 @@ const EditPost = () => {
     };
 
     return (
-        <div>
+        <div className="bg-gradient-to-r from-teal-500 to-indigo-600 min-h-screen text-white">
             <Navbar />
-
             <motion.div
-                className="px-6 md:px-[200px] mt-8"
+                className="max-w-4xl mx-auto px-6 py-12 bg-white rounded-lg shadow-xl mt-8"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1 }}
             >
                 <motion.h1
-                    className="font-bold md:text-2xl text-xl"
+                    className="font-bold text-3xl text-center mb-6 text-gray-800"
                     initial={{ y: -20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.2, duration: 0.5 }}
                 >
-                    Update a Post
+                    Update Your Blog Post
                 </motion.h1>
 
                 <motion.form
-                    className="w-full flex flex-col space-y-4 md:space-y-8 mt-4"
+                    className="w-full flex flex-col space-y-6"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.3, duration: 0.7 }}
@@ -111,79 +91,72 @@ const EditPost = () => {
                 >
                     <motion.input
                         onChange={(e) => setTitle(e.target.value)}
-                        className="px-4 py-2 outline-none"
+                        value={title}
+                        className="px-4 py-2 w-full rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
                         type="text"
                         placeholder="Enter post title"
-                        value={title}
+                        required
                         initial={{ x: -50, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: 0.4, duration: 0.5 }}
                     />
 
-                    <motion.input
-                        onChange={(e) => setFile(e.target.files[0])}
-                        className="px-4"
-                        type="file"
+                    <motion.textarea
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        rows={8}
+                        className="px-4 py-2 w-full rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                        placeholder="Write your post description here..."
+                        required
                         initial={{ x: -50, opacity: 0 }}
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: 0.5, duration: 0.5 }}
                     />
 
                     <div className="flex flex-col">
-                        <div className="flex items-center space-x-4 md:space-x-8">
+                        <div className="flex items-center space-x-4">
                             <motion.input
-                                className="px-4 py-2 outline-none"
+                                className="px-4 py-2 w-full rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
                                 value={cat}
                                 onChange={(e) => setCat(e.target.value)}
                                 type="text"
-                                placeholder="Enter Post Category"
+                                placeholder="Add Post Category"
                                 initial={{ x: -50, opacity: 0 }}
                                 animate={{ x: 0, opacity: 1 }}
                                 transition={{ delay: 0.6, duration: 0.5 }}
                             />
                             <div
                                 onClick={addCategory}
-                                className="bg-black text-white px-4 py-2 font-semibold cursor-pointer"
+                                className="bg-teal-500 text-white px-4 py-2 rounded-md cursor-pointer"
                             >
                                 Add
                             </div>
                         </div>
 
                         <motion.div
-                            className="flex mx-4 mt-3"
+                            className="flex flex-wrap gap-2 mt-4"
                             initial={{ y: 50, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 0.7, duration: 0.5 }}
                         >
-                            {cats?.map((c, i) => (
-                                <div key={i} className="flex justify-center items-center space-x-2 mr-4 bg-gray-200 px-2 py-1 rounded-md">
-                                    <p>{c}</p>
-                                    <p
-                                        onClick={() => deleteCategory(i)}
-                                        className="text-white bg-black rounded-full cursor-pointer p-1 text-sm"
-                                    >
-                                        <RxCross2 />
-                                    </p>
+                            {cats?.map((category, index) => (
+                                <div
+                                    key={index}
+                                    className="bg-teal-200 text-teal-800 px-4 py-2 rounded-full flex items-center space-x-2"
+                                >
+                                    <span>{category}</span>
+                                    <RxCross2
+                                        onClick={() => deleteCategory(index)}
+                                        className="cursor-pointer text-teal-600"
+                                    />
                                 </div>
                             ))}
                         </motion.div>
                     </div>
 
-                    <motion.textarea
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        rows={15}
-                        cols={30}
-                        className="px-4 py-2 outline-none"
-                        placeholder="Write post Description...."
-                        initial={{ x: -50, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: 0.8, duration: 0.5 }}
-                    />
-
                     <motion.button
                         type="submit"
-                        className="bg-black w-full md:w-[20%] mx-auto text-white font-semibold px-4 py-2 md:text-xl text-lg"
+                        className="bg-teal-600 w-full md:w-[30%] mx-auto text-white font-semibold px-4 py-2 text-lg rounded-md transition-all hover:bg-teal-700"
                         initial={{ scale: 0.9 }}
                         animate={{ scale: 1 }}
                         transition={{ duration: 0.3 }}
@@ -192,10 +165,9 @@ const EditPost = () => {
                     </motion.button>
                 </motion.form>
             </motion.div>
-
             <Footer />
         </div>
     );
-}
+};
 
 export default EditPost;
