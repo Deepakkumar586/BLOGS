@@ -37,11 +37,17 @@ const CreateBlog = () => {
     formData.append("userId", user.id);
     formData.append("categories", JSON.stringify(cats));
 
+    // File upload
     if (file) {
       const data = new FormData();
       data.append("file", file);
-      const uploadRes = await axios.post("/upload", data); // Make sure to handle file upload
-      formData.append("image", uploadRes.data.url);
+      try {
+        const uploadRes = await axios.post("/api/upload", data); // Fixed to /api/upload
+        formData.append("image", uploadRes.data.url);
+      } catch (uploadError) {
+        console.error("Error uploading image:", uploadError);
+        return; // Prevent further execution if upload fails
+      }
     }
 
     try {

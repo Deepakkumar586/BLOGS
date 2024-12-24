@@ -38,7 +38,7 @@ const database = require("./DB/database");
 database.connect();
 
 // Middleware for JSON parsing
-app.use(express.json());
+app.use(express.json())
 
 // Static path for images (serve from 'uploads' folder)
 app.use("/uploads", express.static(path.join(__dirname, "Backend/uploads")));
@@ -100,6 +100,3 @@ app.get("*", (req, res) => {
 
 // Server start
 const PORT = process.env.PORT || 8010;
-app.listen(PORT, () => {
-  console.log(`App is running on port ${PORT}`);
-});
