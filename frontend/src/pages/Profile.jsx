@@ -6,7 +6,7 @@ import { UserContext } from "../context/UserContext";
 import axios from "axios";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Loader from "../components/Loader";
-import { motion } from "framer-motion"; 
+import { motion } from "framer-motion";
 
 const Profile = () => {
   const { search } = useLocation();
@@ -22,23 +22,25 @@ const Profile = () => {
   const [userblog, setUserblog] = useState([]);
   const [dataFetched, setDataFetched] = useState(false);
 
+  // Fetch profile user
   const fetchProfileUser = async () => {
     try {
       const res = await axios.get(
-        "https://blogs-19nw.onrender.com/api/users" + user?._id
+        `https://blogs-19nw.onrender.com/api/users/${user?._id}` // Corrected URL
       );
-      setUsername(res.data.findUser.username);
-      setEmail(res.data.findUser.email);
+      setUsername(res?.data?.findUser?.username);
+      setEmail(res?.data?.findUser?.email);
     } catch (err) {
       console.error(err);
     }
   };
 
+  // Update user
   const handleUserUpdate = async () => {
     setUpdated(false);
     try {
       const res = await axios.put(
-        "https://blogs-19nw.onrender.com/api/users" + user?._id,
+        `https://blogs-19nw.onrender.com/api/users/${user?._id}`, // Corrected URL
         { username, email },
         { withCredentials: true }
       );
@@ -49,10 +51,11 @@ const Profile = () => {
     }
   };
 
+  // Delete user
   const handleUserDelete = async () => {
     try {
       const res = await axios.delete(
-        "https://blogs-19nw.onrender.com/api/users" + user?._id,
+        `https://blogs-19nw.onrender.com/api/users/${user?._id}`, // Corrected URL
         { withCredentials: true }
       );
       setUser(null);
@@ -70,7 +73,9 @@ const Profile = () => {
     setLoader(true);
     try {
       if (!dataFetched) {
-        const response = await axios.get(`https://blogs-19nw.onrender.com/api/blogs/user/${user?._id}`);
+        const response = await axios.get(
+          `https://blogs-19nw.onrender.com/api/blogs/user/${user?._id}`
+        );
         const { success, findBlogUser } = response.data;
 
         if (success) {
@@ -78,7 +83,10 @@ const Profile = () => {
           setDataFetched(true);
 
           // Store the fetched data in localStorage
-          localStorage.setItem(`userBlogs_${user?._id}`, JSON.stringify(findBlogUser));
+          localStorage.setItem(
+            `userBlogs_${user?._id}`,
+            JSON.stringify(findBlogUser)
+          );
         } else {
           console.error("Blog fetch failed:", response.data.message);
         }
@@ -101,7 +109,7 @@ const Profile = () => {
           await fetchUserPosts();
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -135,11 +143,11 @@ const Profile = () => {
                 <Loader />
               </div>
             ) : !searchNoResult ? (
-              userblog.map((p) => (
-                <ProfilePost key={p._id} p={p} />
-              ))
+              userblog.map((p) => <ProfilePost key={p._id} p={p} />)
             ) : (
-              <h3 className="text-center font-semibold text-xl mt-16 text-gray-500">No posts available</h3>
+              <h3 className="text-center font-semibold text-xl mt-16 text-gray-500">
+                No posts available
+              </h3>
             )}
           </div>
         </motion.div>
@@ -151,7 +159,9 @@ const Profile = () => {
           animate={{ x: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h1 className="text-2xl font-semibold  text-black mb-4 hover:text-indigo-500">Profile</h1>
+          <h1 className="text-2xl font-semibold  text-black mb-4 hover:text-indigo-500">
+            Profile
+          </h1>
           <input
             onChange={(e) => setUsername(e.target.value)}
             className="w-full outline-none px-4 py-2 mb-4 rounded-md border-2 border-gray-300 text-gray-700"
