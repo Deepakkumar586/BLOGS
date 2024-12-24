@@ -3,7 +3,11 @@ require("dotenv").config();
 
 exports.connect = () => {
   mongoose
-    .connect(process.env.MONGODB_URL)
+    .connect(process.env.MONGODB_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      writeConcern: { w: 'majority' }, // Add this option
+    })
     .then(() => {
       console.log("DB Connected Successfully");
     })
